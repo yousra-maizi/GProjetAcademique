@@ -7,7 +7,7 @@
 
 <BorderPane
     xmlns:fx="http://javafx.com/fxml"
-    fx:controller="org.example.gestionprojetacademique.controller.DashboardController"
+    fx:controller="ps.eheio.gestionprojetacademique.controller.DashboardController"
     styleClass="dash-root"
     prefWidth="1100" prefHeight="700"
     stylesheets="@../styles/dashboard.css">

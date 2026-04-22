@@ -11,7 +11,7 @@
 
 <BorderPane
     xmlns:fx="http://javafx.com/fxml"
-    fx:controller="org.example.gestionprojetacademique.controller.LoginController"
+    fx:controller="ps.eheio.gestionprojetacademique.controller.LoginController"
     styleClass="login-root"
     prefWidth="1100" prefHeight="680"
     stylesheets="@../styles/login.css">

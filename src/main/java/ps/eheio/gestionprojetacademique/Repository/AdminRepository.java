@@ -1,8 +1,7 @@
-package org.example.gestionprojetacademique.Repository;
+package ps.eheio.gestionprojetacademique.Repository;
 
-import org.example.gestionprojetacademique.ConnectionDB.DBConnection;
-import org.example.gestionprojetacademique.model.Admin;
-import org.example.gestionprojetacademique.model.User;
+import ps.eheio.gestionprojetacademique.ConnectionDB.DBConnection;
+import ps.eheio.gestionprojetacademique.model.Admin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

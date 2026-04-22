@@ -1,4 +1,4 @@
-package org.example.gestionprojetacademique.model;
+package ps.eheio.gestionprojetacademique.model;
 
 public class Admin extends User{
     //private int id;

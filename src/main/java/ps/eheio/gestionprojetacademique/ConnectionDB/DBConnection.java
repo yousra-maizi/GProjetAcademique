@@ -1,4 +1,4 @@
-package org.example.gestionprojetacademique.ConnectionDB;
+package ps.eheio.gestionprojetacademique.ConnectionDB;
 
 //import com.almasb.fxgl.input.Input;
 //import com.almasb.fxgl.net.Connection;

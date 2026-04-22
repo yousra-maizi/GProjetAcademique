@@ -1,4 +1,4 @@
-package org.example.gestionprojetacademique.model;
+package ps.eheio.gestionprojetacademique.model;
 
 public class User {
     private int id;

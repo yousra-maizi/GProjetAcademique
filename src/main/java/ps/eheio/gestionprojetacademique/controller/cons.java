@@ -1,4 +1,4 @@
-package org.example.gestionprojetacademique.controller;
+package ps.eheio.gestionprojetacademique.controller;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;

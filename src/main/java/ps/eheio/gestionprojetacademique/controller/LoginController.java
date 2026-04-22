@@ -1,4 +1,4 @@
-package org.example.gestionprojetacademique.controller;
+package ps.eheio.gestionprojetacademique.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -10,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.example.gestionprojetacademique.service.AuthService;
+import ps.eheio.gestionprojetacademique.service.AuthService;
 
 public class LoginController {
     @FXML private TextField loginField;
@@ -53,7 +53,7 @@ public class LoginController {
     private void loadDashboard() {
         try {
             Parent root = FXMLLoader.load(
-                    getClass().getResource("/org/example/gestionprojetacademique/view/DashboardView1.fxml")
+                    getClass().getResource("/ps/eheio/gestionprojetacademique/view/DashboardView1.fxml")
             );
             Stage stage = (Stage) loginField.getScene().getWindow();
             stage.setScene(new Scene(root, 1100, 700));

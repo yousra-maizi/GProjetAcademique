@@ -1,8 +1,7 @@
-package org.example.gestionprojetacademique.controller;
+package ps.eheio.gestionprojetacademique.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.example.gestionprojetacademique.service.AuthService;
+import ps.eheio.gestionprojetacademique.service.AuthService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -217,7 +216,7 @@ public class DashboardController {
         AuthService.logout();
         try {
             Parent root = FXMLLoader.load(
-                    getClass().getResource("/org/example/gestionprojetacademique/view/LoginView1.fxml")
+                    getClass().getResource("/ps/eheio/gestionprojetacademique/view/LoginView1.fxml")
             );
             Stage stage = (Stage) pageTitle.getScene().getWindow();
             stage.setScene(new Scene(root, 1100, 680));

@@ -1,4 +1,4 @@
-module org.example.gestionprojetacademique {
+module ps.eheio.gestionprojetacademique {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -12,9 +12,9 @@ module org.example.gestionprojetacademique {
     requires com.almasb.fxgl.all;
     requires java.sql;
 
-    opens org.example.gestionprojetacademique to javafx.fxml;
+    opens ps.eheio.gestionprojetacademique to javafx.fxml;
 
-    opens org.example.gestionprojetacademique.controller to javafx.fxml;
+    opens ps.eheio.gestionprojetacademique.controller to javafx.fxml;
 
-    exports org.example.gestionprojetacademique;
+    exports ps.eheio.gestionprojetacademique;
 }

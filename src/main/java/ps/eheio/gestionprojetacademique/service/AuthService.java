@@ -1,7 +1,7 @@
-package org.example.gestionprojetacademique.service;
+package ps.eheio.gestionprojetacademique.service;
 
-import org.example.gestionprojetacademique.Repository.AdminRepository;
-import org.example.gestionprojetacademique.model.Admin;
+import ps.eheio.gestionprojetacademique.Repository.AdminRepository;
+import ps.eheio.gestionprojetacademique.model.Admin;
 
 public class AuthService {
     // Single instance for the whole app

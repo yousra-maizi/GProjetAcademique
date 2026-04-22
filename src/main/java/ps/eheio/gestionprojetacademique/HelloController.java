@@ -1,4 +1,4 @@
-package org.example.gestionprojetacademique;
+package ps.eheio.gestionprojetacademique;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

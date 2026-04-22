@@ -147,7 +147,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                org.example.gestionprojetacademique/org.example.gestionprojetacademique.mainApp
+                                ps.eheio.gestionprojetacademique/ps.eheio.gestionprojetacademique.mainApp
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
