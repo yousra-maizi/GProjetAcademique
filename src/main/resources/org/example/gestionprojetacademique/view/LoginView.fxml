@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.gestionprojetacademique.controller.LoginController"
+      alignment="CENTER"
+      spacing="16"
+      style="-fx-background-color: #1e1e2e;"
+      prefWidth="480" prefHeight="400">
+
+    <padding>
+        <Insets top="60" right="60" bottom="60" left="60"/>
+    </padding>
+
+    <Label text="Academic Admin"
+           style="-fx-text-fill: #cdd6f4;
+                  -fx-font-size: 26;
+                  -fx-font-weight: bold;"/>
+
+    <Label text="Sign in to continue"
+           style="-fx-text-fill: #a6adc8;
+                  -fx-font-size: 13;"/>
+
+    <!-- Spacer -->
+    <Region prefHeight="10"/>
+
+    <TextField fx:id="loginField"
+               promptText="Login"
+               maxWidth="320"
+               style="-fx-background-color: #313244;
+                      -fx-text-fill: #cdd6f4;
+                      -fx-prompt-text-fill: #6c7086;
+                      -fx-padding: 10 14 10 14;
+                      -fx-background-radius: 6;
+                      -fx-border-color: #45475a;
+                      -fx-border-radius: 6;"/>
+
+    <PasswordField fx:id="passwordField"
+                   promptText="Password"
+                   maxWidth="320"
+                   style="-fx-background-color: #313244;
+                          -fx-text-fill: #cdd6f4;
+                          -fx-prompt-text-fill: #6c7086;
+                          -fx-padding: 10 14 10 14;
+                          -fx-background-radius: 6;
+                          -fx-border-color: #45475a;
+                          -fx-border-radius: 6;"/>
+
+    <Label fx:id="errorLabel"
+           text=""
+           style="-fx-text-fill: #f38ba8;
+                  -fx-font-size: 12;"/>
+
+    <Button fx:id="loginBtn"
+            text="Login"
+            maxWidth="320"
+            onAction="#handleLogin"
+            style="-fx-background-color: #89b4fa;
+                   -fx-text-fill: #1e1e2e;
+                   -fx-font-weight: bold;
+                   -fx-font-size: 14;
+                   -fx-padding: 10;
+                   -fx-background-radius: 6;
+                   -fx-cursor: hand;"/>
+
+</VBox>

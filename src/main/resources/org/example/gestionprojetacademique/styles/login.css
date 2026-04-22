@@ -1,0 +1,176 @@
+/* ═══════════════════════════════════════════════
+   login.css — Academic Projects Admin
+   Theme: Deep navy + clean white + accent blue
+   ═══════════════════════════════════════════════ */
+
+/* ── Root ───────────────────────────────────── */
+.login-root {
+    -fx-background-color: #F5F7FA;
+}
+
+/* ── Left Brand Panel ───────────────────────── */
+.login-brand-panel {
+    -fx-background-color: #1A2744;
+    -fx-background-radius: 0 0 0 0;
+}
+
+/*.brand-icon {
+    -fx-font-size: 64px;
+    -fx-padding: 0 0 24 0;
+}*/
+
+.brand-title {
+    -fx-font-family: "Georgia";
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.brand-subtitle {
+    -fx-font-family: "Georgia";
+    -fx-font-size: 15px;
+    -fx-text-fill: #7B9ED9;
+    -fx-letter-spacing: 2px;
+}
+
+.brand-description {
+    -fx-font-size: 13px;
+    -fx-text-fill: #8CA5C8;
+    -fx-line-spacing: 4px;
+    -fx-padding: 10 0 0 0;
+}
+
+.dot {
+    -fx-background-color: #3D5A8A;
+    -fx-background-radius: 50%;
+    -fx-min-width: 8px;
+    -fx-min-height: 8px;
+    -fx-max-width: 8px;
+    -fx-max-height: 8px;
+}
+
+.dot-active {
+    -fx-background-color: #4A90D9;
+    -fx-min-width: 24px;
+    -fx-max-width: 24px;
+    -fx-background-radius: 4px;
+}
+
+/* ── Right Form Panel ───────────────────────── */
+.login-form-panel {
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 20, 0, -4, 0);
+}
+
+.form-greeting {
+    -fx-font-size: 15px;
+    -fx-text-fill: #8A9BB5;
+    -fx-font-family: "Segoe UI";
+}
+
+.form-title {
+    -fx-font-family: "Georgia";
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A2744;
+}
+
+/* ── Form Fields ────────────────────────────── */
+.field-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A5568;
+    -fx-font-family: "Segoe UI";
+    -fx-letter-spacing: 0.5px;
+}
+
+.form-field {
+    -fx-background-color: #F5F7FA;
+    -fx-background-radius: 8px;
+    -fx-border-color: #DDE3ED;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1.5px;
+    -fx-padding: 12 16 12 16;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI";
+    -fx-text-fill: #1A2744;
+    -fx-pref-height: 48px;
+}
+
+.form-field:focused {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #4A90D9;
+    -fx-effect: dropshadow(gaussian, rgba(74,144,217,0.15), 8, 0, 0, 2);
+}
+
+.form-field .prompt-text-fill {
+    -fx-fill: #A8B8CC;
+}
+
+/* ── Error Label ────────────── */
+.error-label {
+    -fx-text-fill: #E53E3E;
+    -fx-font-size: 12.5px;
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #FFF5F5;
+    -fx-background-radius: 6px;
+    -fx-border-color: #FEB2B2;
+    -fx-border-radius: 6px;
+    -fx-border-width: 1px;
+    -fx-padding: 8 12 8 12;
+}
+
+/* ── Login Button ─── */
+.btn-login {
+    -fx-background-color: #1A2744;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Segoe UI";
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+    -fx-pref-height: 50px;
+    -fx-effect: dropshadow(gaussian, rgba(26,39,68,0.3), 12, 0, 0, 4);
+}
+
+.btn-login:hover {
+    -fx-background-color: #243460;
+    -fx-effect: dropshadow(gaussian, rgba(26,39,68,0.45), 16, 0, 0, 6);
+    -fx-scale-y: 1.01;
+    -fx-scale-x: 1.01;
+}
+
+.btn-login:pressed {
+    -fx-background-color: #141E38;
+    -fx-scale-y: 0.99;
+    -fx-scale-x: 0.99;
+}
+
+.btn-login:disabled {
+    -fx-background-color: #8A9BB5;
+    -fx-effect: none;
+}
+
+/* ── Spinner ────────────────────────────────── */
+.login-spinner .arc {
+    -fx-stroke: #FFFFFF;
+}
+
+/* ── Footer ─────────────────────────────────── */
+.footer-text {
+    -fx-font-size: 11px;
+    -fx-text-fill: #A8B8CC;
+    -fx-font-family: "Segoe UI";
+}
+
+.footer-link {
+    -fx-font-size: 11px;
+    -fx-text-fill: #4A90D9;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+
+.footer-link:hover {
+    -fx-text-fill: #1A2744;
+}

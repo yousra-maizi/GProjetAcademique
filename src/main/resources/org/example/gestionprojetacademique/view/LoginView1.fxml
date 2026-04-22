@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+
+
+<BorderPane
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="org.example.gestionprojetacademique.controller.LoginController"
+    styleClass="login-root"
+    prefWidth="1100" prefHeight="680"
+    stylesheets="@../styles/login.css">
+
+    <!-- ── LEFT PANEL — Branding ──── -->
+    <left>
+        <VBox styleClass="login-brand-panel" alignment="CENTER" prefWidth="460">
+            <padding><Insets top="60" bottom="60" left="50" right="50"/></padding>
+
+            <!-- Logo / Icon placeholder   <Label text="🎓" styleClass="brand-icon"/> -->
+
+            <ImageView styleClass="brand-logo"  fitHeight="600" fitWidth="400" preserveRatio="true">
+                <image>
+                    <Image url="@../assets/eheiologo.png"/>
+                </image>
+            </ImageView>
+            <VBox spacing="12" alignment="CENTER">
+                <Label text="Gestion des projets académiques" styleClass="brand-title"/>
+                <Label text="Administration Portal" styleClass="brand-subtitle"/>
+                <Region prefHeight="20"/>
+                <Label
+                    text="Manage projects, students, professors&#10;and archive records — all in one place."
+                    styleClass="brand-description"
+                    wrapText="true"
+                    textAlignment="CENTER"/>
+            </VBox>
+
+            <!-- Decorative dots -->
+            <Region VBox.vgrow="ALWAYS"/>
+            <HBox spacing="8" alignment="CENTER">
+                <Label styleClass="dot dot-active"/>
+                <Label styleClass="dot"/>
+                <Label styleClass="dot"/>
+            </HBox>
+        </VBox>
+    </left>
+
+    <!-- ── RIGHT PANEL — Login Form ────── -->
+    <center>
+        <VBox styleClass="login-form-panel" alignment="CENTER">
+            <padding><Insets top="80" bottom="80" left="70" right="70"/></padding>
+
+            <!-- Header -->
+            <VBox spacing="6" alignment="CENTER_LEFT">
+                <Label text="Bonjour," styleClass="form-greeting"/>
+                <Label text="Administrateur" styleClass="form-title"/>
+            </VBox>
+
+            <Region prefHeight="40"/>
+
+            <!-- Form Fields -->
+            <VBox spacing="20">
+
+                <!-- Login -->
+                <VBox spacing="6">
+                    <Label text="Login" styleClass="field-label"/>
+                    <TextField
+                        fx:id="loginField"
+                        promptText="Entrer le surnom"
+                        styleClass="form-field"/>
+                </VBox>
+
+                <!-- Password -->
+                <VBox spacing="6">
+                    <Label text="Password" styleClass="field-label"/>
+                    <PasswordField
+                        fx:id="passwordField"
+                        promptText="Entrer le mot de passe"
+                        styleClass="form-field"/>
+                </VBox>
+
+                <!-- Error Label -->
+                <Label
+                    fx:id="errorLabel"
+                    styleClass="error-label"
+                    text=""
+                    wrapText="true"/>
+
+                <Region prefHeight="10"/>
+
+                <!-- Login Button -->
+                <StackPane>
+                    <Button
+                        fx:id="loginButton"
+                        text="Se connecter"
+                        styleClass="btn-login"
+                        maxWidth="Infinity"
+                        onAction="#handleLogin"/>
+                    <ProgressIndicator
+                        fx:id="loadingSpinner"
+                        styleClass="login-spinner"
+                        prefWidth="24" prefHeight="24"
+                        visible="false"
+                        StackPane.alignment="CENTER_RIGHT">
+                        <StackPane.margin>
+                            <Insets right="16"/>
+                        </StackPane.margin>
+                    </ProgressIndicator>
+                </StackPane>
+
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <!-- Footer -->
+            <HBox alignment="CENTER" spacing="8">
+                <Label text="Système de management des projets académiques" styleClass="footer-text"/>
+                <Label text="·" styleClass="footer-text"/>
+                <Hyperlink text="Exit" styleClass="footer-link" onAction="#handleExit"/>
+            </HBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>
