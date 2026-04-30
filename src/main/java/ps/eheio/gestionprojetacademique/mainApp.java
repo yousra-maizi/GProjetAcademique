@@ -18,9 +18,9 @@ public class mainApp extends Application {
         var url = getClass().getResource("/ps/eheio/gestionprojetacademique/styles/login.css");
         System.out.println("CSS found at: " + url);
         // Connect to DB immediately when app launches
-        DBConnection.getConnection();
+        //DBConnection.getConnection();
         // AuthService instance created
-        AuthService.getInstance();
+       // AuthService.getInstance();
 
         //loading the FXML file
         Parent root = FXMLLoader.load(

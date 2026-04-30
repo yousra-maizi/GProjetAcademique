@@ -13,7 +13,7 @@ module ps.eheio.gestionprojetacademique {
     requires java.sql;
 
     opens ps.eheio.gestionprojetacademique to javafx.fxml;
-
+    opens ps.eheio.gestionprojetacademique.model to javafx.base;
     opens ps.eheio.gestionprojetacademique.controller to javafx.fxml;
 
     exports ps.eheio.gestionprojetacademique;

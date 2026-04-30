@@ -27,27 +27,39 @@ public class LoginController {
 
     @FXML
     private void handleLogin() {
-        String login = loginField.getText().trim();
-        String password = passwordField.getText();
+       try {
+            String login = loginField.getText().trim();
+            String password = passwordField.getText();
 
-        if (login.isEmpty() || password.isEmpty()) {
-            errorLabel.setText("Please fill in all fields.");
-            return;
-        }
+           /* if (login.isEmpty() || password.isEmpty()) {
+                errorLabel.setText("Please fill in all fields.");
+                return;
+            }*/
+           if (login.isEmpty()) {
+               errorLabel.setText("Veuillez entrer le login");
+               loginField.requestFocus();
+               return;
+           }
+           if (password.isEmpty()) {
+               errorLabel.setText("Veuillez entrer le mot de passe");
+               passwordField.requestFocus();
+               return;
+           }
 
-        loginButton.setDisable(true);
-        loginButton.setText("Logging in...");
-        // Get the single shared instance
-        boolean success = AuthService.getInstance().auth(login, password);
+            loginButton.setDisable(true);
+            loginButton.setText("Logging in...");
+            // Get the single shared instance
+            boolean success = AuthService.getInstance().auth(login, password);
 
-        if (success) {
-            loadDashboard();
-        } else {
-            errorLabel.setText("Invalid login or password.");
-            passwordField.clear();
-            loginButton.setDisable(false);
-            loginButton.setText("Login");
-        }
+            if (success) {
+                loadDashboard();
+            } else {
+                errorLabel.setText("Invalid login or password.");
+                passwordField.clear();
+                loginButton.setDisable(false);
+                loginButton.setText("Login");
+            }
+        }catch(Exception ex){}
     }
 
     private void loadDashboard() {

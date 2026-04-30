@@ -6,6 +6,7 @@ import ps.eheio.gestionprojetacademique.model.Admin;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class AdminRepository {
 
@@ -19,11 +20,11 @@ public class AdminRepository {
         try {
             Connection conn = DBConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(req);
-            stmt.setString(1, login);   //  first parameter
-            stmt.setString(2, password); // second parameter
+            stmt.setString(1, login);
+            stmt.setString(2, password);
 
             ResultSet rs = stmt.executeQuery();
-
+            System.out.println("hello cnx");
             if (rs.next()) {
                 System.out.println("Admin found: " + rs.getString("login")); // DEBUG
                 return new Admin(
@@ -34,11 +35,13 @@ public class AdminRepository {
                         rs.getString("nom"),
                         rs.getString("prenom")
                 );
+
+
             } else {
                 System.out.println("Aucun admin trouvé !"); // DEBUG
             }
 
-        } catch (Exception e){
+        } catch (SQLException e){
             System.err.println("Erreur lors recherche : " + e.getMessage());
             e.printStackTrace();
         }

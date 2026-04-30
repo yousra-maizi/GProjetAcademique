@@ -159,20 +159,12 @@
                     <HBox alignment="CENTER_LEFT" spacing="12">
                         <Label text="Archive Records" styleClass="panel-heading"/>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Button text="⬇  Export" styleClass="btn-secondary" onAction="#exportArchive"/>
-                    </HBox>
-                    <HBox spacing="12" alignment="CENTER_LEFT">
-                        <TextField fx:id="archSearch" promptText="🔍  Search archive..." styleClass="search-field" HBox.hgrow="ALWAYS"/>
-                        <ComboBox fx:id="archFilter" promptText="Filter by year" styleClass="combo-filter"/>
                     </HBox>
                     <TableView fx:id="archiveTable" styleClass="data-table" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="archColId"      text="ID"          prefWidth="60"/>
-                            <TableColumn fx:id="archColTitre"   text="Title"       prefWidth="220"/>
-                            <TableColumn fx:id="archColType"    text="Type"        prefWidth="120"/>
-                            <TableColumn fx:id="archColAnnee"   text="Year"        prefWidth="80"/>
-                            <TableColumn fx:id="archColEtudiant" text="Student"    prefWidth="160"/>
-                            <TableColumn fx:id="archColActions" text="Actions"     prefWidth="120"/>
+                            <TableColumn fx:id="archColAnnee"   text="Année Universitaire" prefWidth="280"/>
+                            <TableColumn fx:id="archColStatus"  text="Status"              prefWidth="200"/>
+                            <TableColumn fx:id="archColActions" text="Actions"             prefWidth="400"/>
                         </columns>
                     </TableView>
                 </VBox>

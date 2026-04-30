@@ -29,17 +29,18 @@
                 </image>
             </ImageView>
             <VBox spacing="12" alignment="CENTER">
-                <Label text="Gestion des projets académiques" styleClass="brand-title"/>
-                <Label text="Administration Portal" styleClass="brand-subtitle"/>
-                <Region prefHeight="20"/>
-                <Label
-                    text="Manage projects, students, professors&#10;and archive records — all in one place."
-                    styleClass="brand-description"
-                    wrapText="true"
-                    textAlignment="CENTER"/>
-            </VBox>
+                <Label text="Gestion des projets" styleClass="brand-title"/>
+                <Label text="académiques" styleClass="brand-title"/>
+                <!--  <Label text="Administration Portal" styleClass="brand-subtitle"/>  -->
+                 <Region prefHeight="20"/>
+                 <Label
+                     text="Gestion centralisé des professeurs , étudiants, archivage des données"
+                     styleClass="brand-description"
+                     wrapText="true"
+                     textAlignment="CENTER"/>
+             </VBox>
 
-            <!-- Decorative dots -->
+             <!-- Decorative dots -->
             <Region VBox.vgrow="ALWAYS"/>
             <HBox spacing="8" alignment="CENTER">
                 <Label styleClass="dot dot-active"/>

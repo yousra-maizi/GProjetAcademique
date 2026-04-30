@@ -7,9 +7,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import ps.eheio.gestionprojetacademique.Repository.EheianneeRepository;
+import ps.eheio.gestionprojetacademique.model.Eheiannee;
 import ps.eheio.gestionprojetacademique.service.AuthService;
+import ps.eheio.gestionprojetacademique.service.EheianneeService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -35,7 +40,7 @@ public class DashboardController {
     @FXML private VBox studentsPanel;
     @FXML private VBox archivePanel;
 
-    // ── OVERVIEW STATS ──
+    // ── OVERVIEW ──
     @FXML private Label statProfessors;
     @FXML private Label statStudents;
     @FXML private Label statProjects;
@@ -65,96 +70,79 @@ public class DashboardController {
     @FXML private ComboBox<String> studFilter;
 
     // ── ARCHIVE TABLE ──
-    @FXML private TableView<?> archiveTable;
-    @FXML private TableColumn<?, ?> archColId;
-    @FXML private TableColumn<?, ?> archColTitre;
-    @FXML private TableColumn<?, ?> archColType;
-    @FXML private TableColumn<?, ?> archColAnnee;
-    @FXML private TableColumn<?, ?> archColEtudiant;
-    @FXML private TableColumn<?, ?> archColActions;
-    @FXML private TextField archSearch;
-    @FXML private ComboBox<String> archFilter;
+    @FXML private TableView<Eheiannee> archiveTable;
+    @FXML private TableColumn<Eheiannee, String> archColAnnee;
+    @FXML private TableColumn<Eheiannee, String> archColStatus;
+    @FXML private TableColumn<Eheiannee, Void>   archColActions;
 
-    // ── ACTIVE NAV TRACKING ──
+
+    // ── STATE ──
     private Button activeNavBtn;
+    private EheianneeRepository anneeRepository = new EheianneeRepository();
+    private EheianneeService anneeservice = new EheianneeService();
 
+    // ═══════════════════════════════════════════════════════
+    // INIT
+    // ═══════════════════════════════════════════════════════
     @FXML
     public void initialize() {
-        // Set date
         dateLabel.setText(LocalDate.now()
                 .format(DateTimeFormatter.ofPattern("EEEE, MMMM d yyyy")));
-
-        // Set admin info from logged in session
+        anneeRepository.listAnnees();
         var admin = AuthService.getLoggedInAdmin();
         if (admin != null) {
             adminNameLabel.setText(admin.getPrenom() + " " + admin.getNom());
             adminRoleLabel.setText("Administrator");
         }
 
-        // Set default active nav
         activeNavBtn = btnOverview;
-
-        // Load overview data
         loadOverviewStats();
         loadRecentActivity();
     }
 
-    // ═══════════════════════════════════════
+    // ═══════════════════════════════════════════════════════
     // NAV SWITCHING
-    // ═══════════════════════════════════════
-
-    @FXML
-    private void showOverview() {
+    // ═══════════════════════════════════════════════════════
+    @FXML private void showOverview() {
         switchPanel(overviewPanel, btnOverview, "Overview", "Welcome back! Here's what's happening.");
         loadOverviewStats();
     }
 
-    @FXML
-    private void showProfessors() {
+    @FXML private void showProfessors() {
         switchPanel(professorsPanel, btnProfessors, "Professors", "Manage faculty members and their details.");
         loadProfessors();
     }
 
-    @FXML
-    private void showStudents() {
+    @FXML private void showStudents() {
         switchPanel(studentsPanel, btnStudents, "Students", "View and manage enrolled students.");
         loadStudents();
     }
 
-    @FXML
-    private void showArchive() {
-        switchPanel(archivePanel, btnArchive, "Archive", "Browse and export archived academic records.");
+    @FXML private void showArchive() {
+        switchPanel(archivePanel, btnArchive, "Archive", "Manage and consult academic year records.");
         loadArchive();
     }
 
     private void switchPanel(VBox panel, Button navBtn, String title, String subtitle) {
-        // Hide all panels
         overviewPanel.setVisible(false);
         professorsPanel.setVisible(false);
         studentsPanel.setVisible(false);
         archivePanel.setVisible(false);
-
-        // Show selected
         panel.setVisible(true);
 
-        // Update nav styles
-        if (activeNavBtn != null) {
-            activeNavBtn.getStyleClass().remove("nav-active");
-        }
+        if (activeNavBtn != null) activeNavBtn.getStyleClass().remove("nav-active");
         navBtn.getStyleClass().add("nav-active");
         activeNavBtn = navBtn;
 
-        // Update title
         pageTitle.setText(title);
         pageSubtitle.setText(subtitle);
     }
 
-    // ═══════════════════════════════════════
-    // DATA LOADING — replace with real repo calls
-    // ═══════════════════════════════════════
-
+    // ═══════════════════════════════════════════════════════
+    // DATA LOADING
+    // ═══════════════════════════════════════════════════════
     private void loadOverviewStats() {
-        // TODO: replace with real counts from repositories
+        // TODO: replace with real repository counts
         statProfessors.setText("12");
         statStudents.setText("148");
         statProjects.setText("34");
@@ -162,57 +150,99 @@ public class DashboardController {
     }
 
     private void loadRecentActivity() {
-        ObservableList<String> activities = FXCollections.observableArrayList(
+        activityList.setItems(FXCollections.observableArrayList(
                 "🟢  New student enrolled — Ahmed Benali",
                 "📝  Project submitted — Machine Learning Study",
                 "👨‍🏫  Professor added — Dr. Sarah Martin",
-                "🗂️  Record archived — Projet 2023-045",
+                "🗂️  Record archived — Année 2022-2023",
                 "🔄  Student updated — Fatima Zahra Alami",
                 "📋  New project assigned — Web Application Dev",
                 "✅  Project validated — IoT Systems Research"
-        );
-        activityList.setItems(activities);
+        ));
     }
 
     private void loadProfessors() {
-        // TODO: load from ProfessorRepository and bind to professorsTable
-        // Example:
-        // ObservableList<Professor> data = FXCollections.observableArrayList(repo.findAll());
-        // professorsTable.setItems(data);
+        // TODO: bind ProfessorRepository.findAll() to professorsTable
     }
 
     private void loadStudents() {
-        // TODO: load from StudentRepository and bind to studentsTable
+        // TODO: bind StudentRepository.findAll() to studentsTable
     }
 
     private void loadArchive() {
-        // TODO: load from ArchiveRepository and bind to archiveTable
+        archColAnnee.setCellValueFactory(new PropertyValueFactory<>("annee"));
+        archColStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        archColActions.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                    return;
+                }
+
+                Eheiannee row = getTableView().getItems().get(getIndex());
+                HBox box = new HBox(10);
+
+                Button consulter = new Button("Consulter");
+                consulter.setOnAction(e -> handleConsulter(row));
+                box.getChildren().add(consulter);
+
+                if (row.isActive()) {
+                    Button archiver = new Button("Archiver");
+                    archiver.setOnAction(e -> handleArchiver(row));
+                    box.getChildren().add(archiver);
+                }
+
+                setGraphic(box);
+            }
+        });
+
+        ObservableList<Eheiannee> rows =
+                FXCollections.observableArrayList(anneeservice .getAnnees());
+
+        archiveTable.setItems(rows);
     }
 
-    // ═══════════════════════════════════════
-    // ACTIONS
-    // ═══════════════════════════════════════
+    // ═══════════════════════════════════════════════════════
+    // ARCHIVE ACTIONS
+    // ═══════════════════════════════════════════════════════
+    //btn archiver
+    private void handleArchiver(Eheiannee row) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Archiver l'année");
+        confirm.setHeaderText("Archiver " + row.getAnnee() + " ?");
+        confirm.setContentText("Cette action archivera tous les données de cette année universitaire.");
+        confirm.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                // TODO: call ArchiveService.archiveAnnee(row.getAnnee())
+                System.out.println("Archiving year: " + row.getAnnee());
+                loadArchive(); // refresh table
+            }
+        });
+    }
 
-    @FXML
-    private void addProfessor() {
-        // TODO: open Add Professor dialog/view
+    private void handleConsulter(Eheiannee row) {
+        // TODO: open a detail view for this year's projects
+        System.out.println("Consulting year: " + row.getAnnee());
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // OTHER ACTIONS
+    // ═══════════════════════════════════════════════════════
+    @FXML private void addProfessor() {
+        // TODO: open Add Professor dialog
         System.out.println("Add professor clicked");
     }
 
-    @FXML
-    private void addStudent() {
-        // TODO: open Add Student dialog/view
+    @FXML private void addStudent() {
+        // TODO: open Add Student dialog
         System.out.println("Add student clicked");
     }
 
-    @FXML
-    private void exportArchive() {
-        // TODO: export archive to CSV/PDF
-        System.out.println("Export archive clicked");
-    }
-
-    @FXML
-    private void handleLogout() {
+    @FXML private void handleLogout() {
         AuthService.logout();
         try {
             Parent root = FXMLLoader.load(
@@ -220,7 +250,7 @@ public class DashboardController {
             );
             Stage stage = (Stage) pageTitle.getScene().getWindow();
             stage.setScene(new Scene(root, 1100, 680));
-            stage.setTitle("EHEIO administration");
+            stage.setTitle("EHEIO Administration");
             stage.setResizable(false);
         } catch (Exception e) {
             e.printStackTrace();
