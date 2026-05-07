@@ -1,48 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.geometry.Insets?>
 
-<BorderPane
-    xmlns:fx="http://javafx.com/fxml"
-    fx:controller="ps.eheio.gestionprojetacademique.controller.DashboardController"
-    styleClass="dash-root"
-    prefWidth="1100" prefHeight="700"
-    stylesheets="@../styles/dashboard.css">
+<BorderPane prefHeight="700" prefWidth="1100" styleClass="dash-root" stylesheets="@../styles/dashboard.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="ps.eheio.gestionprojetacademique.controller.DashboardController">
 
     <!-- ── LEFT SIDEBAR ── -->
     <left>
-        <VBox styleClass="sidebar" prefWidth="220" spacing="4">
-            <padding><Insets top="32" bottom="32" left="16" right="16"/></padding>
+        <VBox prefWidth="220" spacing="4" styleClass="sidebar">
+            <padding><Insets bottom="32" left="16" right="16" top="32" /></padding>
 
             <!-- App Brand -->
-            <VBox styleClass="sidebar-brand" spacing="2">
-                <padding><Insets bottom="32"/></padding>
-                <Label text="🎓" styleClass="sidebar-icon"/>
-                <Label text="AcadAdmin" styleClass="sidebar-name"/>
-                <Label text="Management Portal" styleClass="sidebar-tagline"/>
+            <VBox spacing="2" styleClass="sidebar-brand">
+                <padding><Insets bottom="32" /></padding>
+             <!--  <Label text="🎓" styleClass="sidebar-icon"/> -->
+                <ImageView fitHeight="139.0" fitWidth="237.0" preserveRatio="true" styleClass="brand-logo">
+                    <image>
+                        <Image url="@../assets/eheiologo.png" />
+                    </image>
+                </ImageView>
+                <Label prefHeight="22.0" prefWidth="238.0" styleClass="sidebar-name" text="EHIO Administration" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial" size="24.0" />
+               </font></Label>
+                <Label styleClass="sidebar-tagline" />
             </VBox>
 
             <!-- Nav Items -->
-            <Label text="NAVIGATION" styleClass="nav-section-label"/>
-            <Region prefHeight="8"/>
+            <Label styleClass="nav-section-label" text="NAVIGATION" />
+            <Region prefHeight="8" />
 
-            <Button fx:id="btnOverview"   text="⬛  Overview"    styleClass="nav-btn, nav-active"  maxWidth="Infinity" onAction="#showOverview"/>
-            <Button fx:id="btnProfessors" text="👨‍🏫  Professors"  styleClass="nav-btn"              maxWidth="Infinity" onAction="#showProfessors"/>
-            <Button fx:id="btnStudents"   text="🎓  Students"    styleClass="nav-btn"              maxWidth="Infinity" onAction="#showStudents"/>
-            <Button fx:id="btnArchive"    text="🗂️  Archive"     styleClass="nav-btn"              maxWidth="Infinity" onAction="#showArchive"/>
+            <Button fx:id="btnOverview" maxWidth="Infinity" onAction="#showOverview" styleClass="nav-btn, nav-active" text="⬛  Acceuil" />
+            <Button fx:id="btnProfessors" maxWidth="Infinity" onAction="#showProfessors" styleClass="nav-btn" text="👨‍🏫  Professors" />
+            <Button fx:id="btnStudents" maxWidth="Infinity" onAction="#showStudents" styleClass="nav-btn" text="🎓  Students" />
+            <Button fx:id="btnArchive" maxWidth="Infinity" onAction="#showArchive" styleClass="nav-btn" text="🗂️  Archive" />
 
-            <Region VBox.vgrow="ALWAYS"/>
+            <Region VBox.vgrow="ALWAYS" />
 
             <!-- Bottom: logged admin info + logout -->
-            <Separator styleClass="sidebar-sep"/>
+            <Separator styleClass="sidebar-sep" />
             <VBox spacing="4" styleClass="sidebar-user">
-                <Label fx:id="adminNameLabel" text="Admin" styleClass="admin-name"/>
-                <Label fx:id="adminRoleLabel" text="Administrator" styleClass="admin-role"/>
+                <Label fx:id="adminNameLabel" styleClass="admin-name" text="Admin" />
+                <Label fx:id="adminRoleLabel" styleClass="admin-role" text="Administrator" />
             </VBox>
-            <Button text="⏻  Logout" styleClass="btn-logout" maxWidth="Infinity" onAction="#handleLogout"/>
+            <Button maxWidth="Infinity" onAction="#handleLogout" styleClass="btn-logout" text="⏻  Logout" />
         </VBox>
     </left>
 
@@ -51,18 +55,18 @@
         <VBox styleClass="main-area">
 
             <!-- Top Bar -->
-            <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="16">
-                <padding><Insets top="20" bottom="20" left="32" right="32"/></padding>
+            <HBox alignment="CENTER_LEFT" spacing="16" styleClass="topbar">
+                <padding><Insets bottom="20" left="32" right="32" top="20" /></padding>
                 <VBox spacing="2" HBox.hgrow="ALWAYS">
-                    <Label fx:id="pageTitle"    text="Overview"           styleClass="page-title"/>
-                    <Label fx:id="pageSubtitle" text="Welcome back! Here's what's happening." styleClass="page-subtitle"/>
+                    <Label fx:id="pageTitle" styleClass="page-title" text="Acceuil" />
+                    <Label fx:id="pageSubtitle" styleClass="page-subtitle" text="Welcome back! Here's what's happening." />
                 </VBox>
-                <Label fx:id="dateLabel" text="" styleClass="date-label"/>
+                <Label fx:id="dateLabel" styleClass="date-label" text="" />
             </HBox>
 
             <!-- Dynamic Content Area -->
-            <StackPane VBox.vgrow="ALWAYS" styleClass="content-stack">
-                <padding><Insets top="0" bottom="24" left="32" right="32"/></padding>
+            <StackPane styleClass="content-stack" VBox.vgrow="ALWAYS">
+                <padding><Insets bottom="24" left="32" right="32" top="0" /></padding>
 
                 <!-- ══ OVERVIEW PANEL ══ -->
                 <VBox fx:id="overviewPanel" spacing="24" visible="true">
@@ -70,63 +74,63 @@
                     <!-- Stat Cards Row -->
                     <HBox spacing="16">
                         <!-- Card 1 -->
-                        <VBox styleClass="stat-card card-blue" HBox.hgrow="ALWAYS" spacing="6">
-                            <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
-                            <Label text="PROFESSORS" styleClass="card-label"/>
-                            <Label fx:id="statProfessors" text="—" styleClass="card-value"/>
-                            <Label text="Active faculty members" styleClass="card-sub"/>
+                        <VBox spacing="6" styleClass="stat-card card-blue" HBox.hgrow="ALWAYS">
+                            <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                            <Label styleClass="card-label" text="PROFESSORS" />
+                            <Label fx:id="statProfessors" styleClass="card-value" text="—" />
+                            <Label styleClass="card-sub" text="Active faculty members" />
                         </VBox>
                         <!-- Card 2 -->
-                        <VBox styleClass="stat-card card-green" HBox.hgrow="ALWAYS" spacing="6">
-                            <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
-                            <Label text="STUDENTS" styleClass="card-label"/>
-                            <Label fx:id="statStudents" text="—" styleClass="card-value"/>
-                            <Label text="Enrolled students" styleClass="card-sub"/>
+                        <VBox spacing="6" styleClass="stat-card card-green" HBox.hgrow="ALWAYS">
+                            <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                            <Label styleClass="card-label" text="STUDENTS" />
+                            <Label fx:id="statStudents" styleClass="card-value" text="—" />
+                            <Label styleClass="card-sub" text="Enrolled students" />
                         </VBox>
                         <!-- Card 3 -->
-                        <VBox styleClass="stat-card card-orange" HBox.hgrow="ALWAYS" spacing="6">
-                            <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
-                            <Label text="PROJECTS" styleClass="card-label"/>
-                            <Label fx:id="statProjects" text="—" styleClass="card-value"/>
-                            <Label text="Active projects" styleClass="card-sub"/>
+                        <VBox spacing="6" styleClass="stat-card card-orange" HBox.hgrow="ALWAYS">
+                            <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                            <Label styleClass="card-label" text="PROJECTS" />
+                            <Label fx:id="statProjects" styleClass="card-value" text="—" />
+                            <Label styleClass="card-sub" text="Active projects" />
                         </VBox>
                         <!-- Card 4 -->
-                        <VBox styleClass="stat-card card-purple" HBox.hgrow="ALWAYS" spacing="6">
-                            <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
-                            <Label text="ARCHIVED" styleClass="card-label"/>
-                            <Label fx:id="statArchived" text="—" styleClass="card-value"/>
-                            <Label text="Archived records" styleClass="card-sub"/>
+                        <VBox spacing="6" styleClass="stat-card card-purple" HBox.hgrow="ALWAYS">
+                            <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                            <Label styleClass="card-label" text="ARCHIVED" />
+                            <Label fx:id="statArchived" styleClass="card-value" text="—" />
+                            <Label styleClass="card-sub" text="Archived records" />
                         </VBox>
                     </HBox>
 
                     <!-- Recent Activity -->
-                    <VBox styleClass="panel-box" spacing="12" VBox.vgrow="ALWAYS">
-                        <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
-                        <Label text="Recent Activity" styleClass="panel-title"/>
-                        <Separator/>
-                        <ListView fx:id="activityList" styleClass="activity-list" VBox.vgrow="ALWAYS"/>
+                    <VBox spacing="12" styleClass="panel-box" VBox.vgrow="ALWAYS">
+                        <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                        <Label styleClass="panel-title" text="Recent Activity" />
+                        <Separator />
+                        <ListView fx:id="activityList" styleClass="activity-list" VBox.vgrow="ALWAYS" />
                     </VBox>
                 </VBox>
 
                 <!-- ══ PROFESSORS PANEL ══ -->
                 <VBox fx:id="professorsPanel" spacing="16" visible="false">
                     <HBox alignment="CENTER_LEFT" spacing="12">
-                        <Label text="Faculty Management" styleClass="panel-heading"/>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Button text="＋  Add Professor" styleClass="btn-primary" onAction="#addProfessor"/>
+                        <Label styleClass="panel-heading" text="Faculty Management" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button onAction="#addProfessor" styleClass="btn-primary" text="＋  Add Professor" />
                     </HBox>
-                    <HBox spacing="12" alignment="CENTER_LEFT">
-                        <TextField fx:id="profSearch" promptText="🔍  Search professors..." styleClass="search-field" HBox.hgrow="ALWAYS"/>
-                        <ComboBox fx:id="profFilter" promptText="Filter by department" styleClass="combo-filter"/>
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <TextField fx:id="profSearch" promptText="🔍  Search professors..." styleClass="search-field" HBox.hgrow="ALWAYS" />
+                        <ComboBox fx:id="profFilter" promptText="Filter by department" styleClass="combo-filter" />
                     </HBox>
                     <TableView fx:id="professorsTable" styleClass="data-table" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="profColId"         text="ID"         prefWidth="60"/>
-                            <TableColumn fx:id="profColNom"        text="Last Name"  prefWidth="160"/>
-                            <TableColumn fx:id="profColPrenom"     text="First Name" prefWidth="160"/>
-                            <TableColumn fx:id="profColEmail"      text="Email"      prefWidth="220"/>
-                            <TableColumn fx:id="profColSpecialite" text="Speciality" prefWidth="160"/>
-                            <TableColumn fx:id="profColActions"    text="Actions"    prefWidth="120"/>
+                            <TableColumn fx:id="profColId" prefWidth="60" text="ID" />
+                            <TableColumn fx:id="profColNom" prefWidth="160" text="Last Name" />
+                            <TableColumn fx:id="profColPrenom" prefWidth="160" text="First Name" />
+                            <TableColumn fx:id="profColEmail" prefWidth="220" text="Email" />
+                            <TableColumn fx:id="profColSpecialite" prefWidth="160" text="Speciality" />
+                            <TableColumn fx:id="profColActions" prefWidth="120" text="Actions" />
                         </columns>
                     </TableView>
                 </VBox>
@@ -134,22 +138,22 @@
                 <!-- ══ STUDENTS PANEL ══ -->
                 <VBox fx:id="studentsPanel" spacing="16" visible="false">
                     <HBox alignment="CENTER_LEFT" spacing="12">
-                        <Label text="Student Management" styleClass="panel-heading"/>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Button text="＋  Add Student" styleClass="btn-primary" onAction="#addStudent"/>
+                        <Label styleClass="panel-heading" text="Student Management" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button onAction="#addStudent" styleClass="btn-primary" text="＋  Add Student" />
                     </HBox>
-                    <HBox spacing="12" alignment="CENTER_LEFT">
-                        <TextField fx:id="studSearch" promptText="🔍  Search students..." styleClass="search-field" HBox.hgrow="ALWAYS"/>
-                        <ComboBox fx:id="studFilter" promptText="Filter by level" styleClass="combo-filter"/>
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <TextField fx:id="studSearch" promptText="🔍  Search students..." styleClass="search-field" HBox.hgrow="ALWAYS" />
+                        <ComboBox fx:id="studFilter" promptText="Filter by level" styleClass="combo-filter" />
                     </HBox>
                     <TableView fx:id="studentsTable" styleClass="data-table" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="studColId"       text="ID"         prefWidth="60"/>
-                            <TableColumn fx:id="studColNom"      text="Last Name"  prefWidth="160"/>
-                            <TableColumn fx:id="studColPrenom"   text="First Name" prefWidth="160"/>
-                            <TableColumn fx:id="studColEmail"    text="Email"      prefWidth="220"/>
-                            <TableColumn fx:id="studColNiveau"   text="Level"      prefWidth="100"/>
-                            <TableColumn fx:id="studColActions"  text="Actions"    prefWidth="120"/>
+                            <TableColumn fx:id="studColId" prefWidth="60" text="ID" />
+                            <TableColumn fx:id="studColNom" prefWidth="160" text="Last Name" />
+                            <TableColumn fx:id="studColPrenom" prefWidth="160" text="First Name" />
+                            <TableColumn fx:id="studColEmail" prefWidth="220" text="Email" />
+                            <TableColumn fx:id="studColNiveau" prefWidth="100" text="Level" />
+                            <TableColumn fx:id="studColActions" prefWidth="120" text="Actions" />
                         </columns>
                     </TableView>
                 </VBox>
@@ -157,14 +161,14 @@
                 <!-- ══ ARCHIVE PANEL ══ -->
                 <VBox fx:id="archivePanel" spacing="16" visible="false">
                     <HBox alignment="CENTER_LEFT" spacing="12">
-                        <Label text="Archive Records" styleClass="panel-heading"/>
-                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label styleClass="panel-heading" text="Archive Records" />
+                        <Region HBox.hgrow="ALWAYS" />
                     </HBox>
                     <TableView fx:id="archiveTable" styleClass="data-table" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="archColAnnee"   text="Année Universitaire" prefWidth="280"/>
-                            <TableColumn fx:id="archColStatus"  text="Status"              prefWidth="200"/>
-                            <TableColumn fx:id="archColActions" text="Actions"             prefWidth="400"/>
+                            <TableColumn fx:id="archColAnnee" prefWidth="280" text="Année Universitaire" />
+                            <TableColumn fx:id="archColStatus" prefWidth="200" text="Status" />
+                            <TableColumn fx:id="archColActions" prefWidth="400" text="Actions" />
                         </columns>
                     </TableView>
                 </VBox>

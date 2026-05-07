@@ -1,39 +1,23 @@
 package ps.eheio.gestionprojetacademique.model;
 
 public class Eheiannee {
-    private  String annee;
-    private boolean isActive;
-    private String status;
+    private int    id;
+    private String libelle;   // ex: "2025-2026"
+    private String statut;    // "active" ou "archivée"
+    private String dbName;    // ex: "ehei2026"
 
 
-
-    public Eheiannee(String annee, boolean isActive) {
-        this.annee =annee;
-        this.isActive = isActive;
-        this.status = isActive ? "Active" : "Archivé";
+    public Eheiannee(int id, String libelle, String statut, String dbName) {
+        this.id      = id;
+        this.libelle = libelle;
+        this.statut  = statut;
+        this.dbName  = dbName;
     }
 
-    public String getAnnee() {
-        return annee;
-    }
+    public boolean isActive() { return "active".equals(statut); }
 
-    public void setAnnee(String annee) {
-        this.annee = annee;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public int    getId() { return id; }
+    public String getLibelle() { return libelle; }
+    public String getStatut()  { return statut; }
+    public String getDbName()  { return dbName; }
 }

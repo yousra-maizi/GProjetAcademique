@@ -15,6 +15,6 @@ module ps.eheio.gestionprojetacademique {
     opens ps.eheio.gestionprojetacademique to javafx.fxml;
     opens ps.eheio.gestionprojetacademique.model to javafx.base;
     opens ps.eheio.gestionprojetacademique.controller to javafx.fxml;
-
+    opens ps.eheio.gestionprojetacademique.scriptSQL;
     exports ps.eheio.gestionprojetacademique;
 }

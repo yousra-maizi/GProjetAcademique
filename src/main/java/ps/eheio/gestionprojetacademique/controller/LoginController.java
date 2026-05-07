@@ -10,6 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import ps.eheio.gestionprojetacademique.Exceptions.AuthenticationException;
+import ps.eheio.gestionprojetacademique.Exceptions.LoginException;
+import ps.eheio.gestionprojetacademique.Exceptions.MdpException;
 import ps.eheio.gestionprojetacademique.service.AuthService;
 
 public class LoginController {
@@ -27,39 +30,45 @@ public class LoginController {
 
     @FXML
     private void handleLogin() {
-       try {
+        try {
             String login = loginField.getText().trim();
             String password = passwordField.getText();
 
-           /* if (login.isEmpty() || password.isEmpty()) {
-                errorLabel.setText("Please fill in all fields.");
+            if (login.isEmpty()) {
+                errorLabel.setText("Veuillez entrer le login");
                 return;
-            }*/
-           if (login.isEmpty()) {
-               errorLabel.setText("Veuillez entrer le login");
-               loginField.requestFocus();
-               return;
-           }
-           if (password.isEmpty()) {
-               errorLabel.setText("Veuillez entrer le mot de passe");
-               passwordField.requestFocus();
-               return;
-           }
+            }
+
+            if (password.isEmpty()) {
+                errorLabel.setText("Veuillez entrer le mot de passe");
+                return;
+            }
 
             loginButton.setDisable(true);
             loginButton.setText("Logging in...");
-            // Get the single shared instance
-            boolean success = AuthService.getInstance().auth(login, password);
 
-            if (success) {
-                loadDashboard();
-            } else {
-                errorLabel.setText("Invalid login or password.");
-                passwordField.clear();
-                loginButton.setDisable(false);
-                loginButton.setText("Login");
-            }
-        }catch(Exception ex){}
+            AuthService.getInstance().authentification(login, password);
+
+            loadDashboard();
+
+        } catch (LoginException e) {
+            errorLabel.setText(e.getMessage());
+
+        } catch (MdpException e) {
+            errorLabel.setText(e.getMessage());
+            passwordField.clear();
+
+        } catch (AuthenticationException e) {
+            errorLabel.setText(e.getMessage());
+
+        } catch (Exception e) {
+            errorLabel.setText("Erreur technique.");
+            e.printStackTrace();
+
+        } finally {
+            loginButton.setDisable(false);
+            loginButton.setText("Login");
+        }
     }
 
     private void loadDashboard() {

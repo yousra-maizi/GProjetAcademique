@@ -11,10 +11,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import ps.eheio.gestionprojetacademique.Repository.EheianneeRepository;
+import ps.eheio.gestionprojetacademique.Exceptions.ArchiveException;
+import ps.eheio.gestionprojetacademique.Exceptions.DatabaseException;
+import ps.eheio.gestionprojetacademique.Repository.AnneeRepository;
 import ps.eheio.gestionprojetacademique.model.Eheiannee;
 import ps.eheio.gestionprojetacademique.service.AuthService;
-import ps.eheio.gestionprojetacademique.service.EheianneeService;
+import ps.eheio.gestionprojetacademique.service.AnneeService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -78,8 +80,8 @@ public class DashboardController {
 
     // ── STATE ──
     private Button activeNavBtn;
-    private EheianneeRepository anneeRepository = new EheianneeRepository();
-    private EheianneeService anneeservice = new EheianneeService();
+    private AnneeRepository anneeRepository = new AnneeRepository();
+    private AnneeService anneeservice = new AnneeService();
 
     // ═══════════════════════════════════════════════════════
     // INIT
@@ -88,11 +90,11 @@ public class DashboardController {
     public void initialize() {
         dateLabel.setText(LocalDate.now()
                 .format(DateTimeFormatter.ofPattern("EEEE, MMMM d yyyy")));
-        anneeRepository.listAnnees();
+        //anneeRepository.findAll();
         var admin = AuthService.getLoggedInAdmin();
         if (admin != null) {
             adminNameLabel.setText(admin.getPrenom() + " " + admin.getNom());
-            adminRoleLabel.setText("Administrator");
+            adminRoleLabel.setText("Administrateur");
         }
 
         activeNavBtn = btnOverview;
@@ -104,7 +106,7 @@ public class DashboardController {
     // NAV SWITCHING
     // ═══════════════════════════════════════════════════════
     @FXML private void showOverview() {
-        switchPanel(overviewPanel, btnOverview, "Overview", "Welcome back! Here's what's happening.");
+        switchPanel(overviewPanel, btnOverview, "Acceuil", "Welcome back! Here's what's happening.");
         loadOverviewStats();
     }
 
@@ -170,63 +172,71 @@ public class DashboardController {
     }
 
     private void loadArchive() {
-        archColAnnee.setCellValueFactory(new PropertyValueFactory<>("annee"));
-        archColStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        archColAnnee.setCellValueFactory(new PropertyValueFactory<>("libelle"));
+        archColStatus.setCellValueFactory(new PropertyValueFactory<>("statut"));
 
+        // boutons dynamiques
         archColActions.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
+                if (empty) { setGraphic(null); return; }
 
-                if (empty) {
-                    setGraphic(null);
-                    return;
+                Eheiannee annee = getTableView().getItems().get(getIndex());
+                HBox box = new HBox(8);
+
+                if (annee.isActive()) {
+                    Button btnArchiver = new Button("🗂  Archiver");
+                    btnArchiver.setOnAction(e -> handleArchiver(annee));
+                    box.getChildren().add(btnArchiver);
                 }
 
-                Eheiannee row = getTableView().getItems().get(getIndex());
-                HBox box = new HBox(10);
-
-                Button consulter = new Button("Consulter");
-                consulter.setOnAction(e -> handleConsulter(row));
-                box.getChildren().add(consulter);
-
-                if (row.isActive()) {
-                    Button archiver = new Button("Archiver");
-                    archiver.setOnAction(e -> handleArchiver(row));
-                    box.getChildren().add(archiver);
-                }
+                Button btnConsulter = new Button("👁  Consulter");
+                btnConsulter.setOnAction(e -> handleConsulter(annee));
+                box.getChildren().add(btnConsulter);
 
                 setGraphic(box);
             }
         });
 
-        ObservableList<Eheiannee> rows =
-                FXCollections.observableArrayList(anneeservice .getAnnees());
-
-        archiveTable.setItems(rows);
+        // données réelles depuis les BDs
+        ObservableList<Eheiannee> data = FXCollections.observableArrayList(
+                anneeservice.getAllAnnees()
+        );
+        archiveTable.setItems(data);
+        System.out.println("208 dash Annees trouvées: " + data.size());
     }
 
     // ═══════════════════════════════════════════════════════
     // ARCHIVE ACTIONS
     // ═══════════════════════════════════════════════════════
     //btn archiver
-    private void handleArchiver(Eheiannee row) {
+    private void handleArchiver(Eheiannee annee) {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Archiver l'année");
-        confirm.setHeaderText("Archiver " + row.getAnnee() + " ?");
-        confirm.setContentText("Cette action archivera tous les données de cette année universitaire.");
+        confirm.setHeaderText("Archiver " + annee.getLibelle() + " ?");
+        confirm.setContentText("Une nouvelle BD sera créée pour l'année suivante.");
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                // TODO: call ArchiveService.archiveAnnee(row.getAnnee())
-                System.out.println("Archiving year: " + row.getAnnee());
-                loadArchive(); // refresh table
+                try {
+                    anneeservice.archiverAnneeActive();
+                    loadArchive();
+                } catch (ArchiveException e) {
+                    new Alert(Alert.AlertType.ERROR,
+                            "Archivage échoué: " + e.getMessage()
+                    ).show();
+                }catch (DatabaseException e) {
+                    new Alert(Alert.AlertType.ERROR,
+                            "Erreur de connexion: " + e.getMessage()
+                    ).show();
+                }
             }
         });
     }
 
     private void handleConsulter(Eheiannee row) {
         // TODO: open a detail view for this year's projects
-        System.out.println("Consulting year: " + row.getAnnee());
+       // System.out.println("Consulting year: " + row.getAnnee());
     }
 
     // ═══════════════════════════════════════════════════════

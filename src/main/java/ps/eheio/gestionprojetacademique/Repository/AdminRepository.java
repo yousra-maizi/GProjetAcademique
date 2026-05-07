@@ -1,6 +1,6 @@
 package ps.eheio.gestionprojetacademique.Repository;
 
-import ps.eheio.gestionprojetacademique.ConnectionDB.DBConnection;
+import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionFactory;
 import ps.eheio.gestionprojetacademique.model.Admin;
 
 import java.sql.Connection;
@@ -10,23 +10,20 @@ import java.sql.SQLException;
 
 public class AdminRepository {
 
-    public Admin findByLoginPassword(String login, String password){
+    public Admin findByLogin(String login) {
         String req = "SELECT u.id, u.login, u.password, u.role_id, a.nom, a.prenom " +
                 "FROM user u " +
                 "INNER JOIN administrateur a ON u.id = a.id " +
                 "INNER JOIN role r ON u.role_id = r.id " +
-                "WHERE u.login = ? AND u.password = ? " +
-                "AND r.libelle = 'administrateur'";
+                "WHERE u.login = ? AND r.libelle = 'administrateur'";
+
         try {
-            Connection conn = DBConnection.getConnection();
+
+            Connection conn = ConnectionFactory.getActiveConnection();
             PreparedStatement stmt = conn.prepareStatement(req);
             stmt.setString(1, login);
-            stmt.setString(2, password);
-
             ResultSet rs = stmt.executeQuery();
-            System.out.println("hello cnx");
             if (rs.next()) {
-                System.out.println("Admin found: " + rs.getString("login")); // DEBUG
                 return new Admin(
                         rs.getInt("id"),
                         rs.getString("login"),
@@ -35,14 +32,8 @@ public class AdminRepository {
                         rs.getString("nom"),
                         rs.getString("prenom")
                 );
-
-
-            } else {
-                System.out.println("Aucun admin trouvé !"); // DEBUG
             }
-
-        } catch (SQLException e){
-            System.err.println("Erreur lors recherche : " + e.getMessage());
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
