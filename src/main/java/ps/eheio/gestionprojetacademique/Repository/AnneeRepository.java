@@ -31,7 +31,7 @@ public class AnneeRepository {
             while (rs.next()) {
                 String dbName = rs.getString("schema_name");
 
-                System.out.println("DB trouvée: " + dbName);
+               // System.out.println("DB trouvée: " + dbName);
 
                 Eheiannee annee = readMeta(dbName);
                 if (annee != null) {
@@ -49,7 +49,7 @@ public class AnneeRepository {
             e.printStackTrace();
         }
 
-        System.out.println("Annees trouvées: " + annees.size());
+       // System.out.println("Annees trouvées: " + annees.size());
 
         annees.sort((a, b) -> b.getLibelle().compareTo(a.getLibelle()));
         return annees;
@@ -64,7 +64,7 @@ public class AnneeRepository {
 
             ResultSet rs = stmt.executeQuery();
 
-            System.out.println("DB testée: " + dbName);
+          //  System.out.println("DB testée: " + dbName);
 
             if (rs.next()) {
                 Eheiannee annee = new Eheiannee(
@@ -74,7 +74,7 @@ public class AnneeRepository {
                         dbName
                 );
 
-                System.out.println("META OK: " + dbName);
+              //  System.out.println("META OK: " + dbName);
                 conn.close();
                 return annee;
             }
