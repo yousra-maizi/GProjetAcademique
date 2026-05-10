@@ -242,6 +242,7 @@
                         <Insets top="20"/>
                     </padding>
 
+                    <!-- Header -->
                     <HBox alignment="CENTER_LEFT" spacing="12">
                         <Button fx:id="btnRetourGroupes" text="← Retour" styleClass="btn-secondary" onAction="#retourGroupes"/>
                         <Label fx:id="membresTitre" text="Membres du groupe" styleClass="panel-heading"/>
@@ -249,8 +250,11 @@
                         <Label fx:id="membresProjet" text="" styleClass="panel-heading"/>
                     </HBox>
 
-                    <HBox spacing="16" VBox.vgrow="ALWAYS">
-                        <VBox styleClass="panel-box" spacing="12" HBox.hgrow="ALWAYS">
+                    <!-- SplitPane vertical pour redimensionner -->
+                    <SplitPane orientation="VERTICAL" VBox.vgrow="ALWAYS" dividerPositions="0.5">
+
+                        <!-- Panel Étudiants (haut) -->
+                        <VBox styleClass="panel-box" spacing="12">
                             <padding>
                                 <Insets top="16" bottom="16" left="16" right="16"/>
                             </padding>
@@ -266,7 +270,8 @@
                             </TableView>
                         </VBox>
 
-                        <VBox styleClass="panel-box" spacing="12" HBox.hgrow="ALWAYS">
+                        <!-- Panel Tâches (bas) -->
+                        <VBox styleClass="panel-box" spacing="12">
                             <padding>
                                 <Insets top="16" bottom="16" left="16" right="16"/>
                             </padding>
@@ -282,7 +287,8 @@
                                 </columns>
                             </TableView>
                         </VBox>
-                    </HBox>
+
+                    </SplitPane>
                 </VBox>
 
                 <!-- ══ ARCHIVE ══ -->

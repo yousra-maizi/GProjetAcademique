@@ -12,10 +12,16 @@ public class GroupeService {
 
     private final GroupeRepository groupeRepo;
 
+    /**
+     * Constructeur avec connexion personnalisée (pour les archives)
+     */
     public GroupeService(Connection connection) {
         this.groupeRepo = new GroupeRepository(connection);
     }
 
+    /**
+     * Constructeur par défaut - utilise la connexion active
+     */
     public GroupeService() throws DatabaseException {
         this.groupeRepo = new GroupeRepository();
     }
@@ -28,17 +34,10 @@ public class GroupeService {
     }
 
     /**
-     * Récupère les groupes d'un niveau
+     * Récupère les groupes d'un niveau spécifique (ex: 3GI)
      */
     public List<Groupe> getGroupesByNiveau(int niveauId) throws DatabaseException {
         return groupeRepo.findByNiveau(niveauId);
-    }
-
-    /**
-     * Récupère les groupes d'une filière (classe)
-     */
-    public List<Groupe> getGroupesByClasse(int classeId) throws DatabaseException {
-        return groupeRepo.findByClasse(classeId);
     }
 
     /**
@@ -46,5 +45,8 @@ public class GroupeService {
      */
     public List<Etudiant> getEtudiantsByGroupe(int groupeId) throws DatabaseException {
         return groupeRepo.findEtudiantsByGroupe(groupeId);
+    }
+    public List<Etudiant> getEtudiantsByGroupeAndNiveau(int groupeId, int niveauId) throws DatabaseException {
+        return groupeRepo.findEtudiantsByGroupeAndNiveau(groupeId, niveauId);
     }
 }

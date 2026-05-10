@@ -8,7 +8,21 @@ public class Tache {
     private String professeurPrenom;
     private String etatValidation;  // depuis submission
     private Double note;            // peut être null si pas encore noté
+    private String statut=null;
 
+    public Tache(int id, String titre, String description,
+                 String professeurNom, String professeurPrenom,
+                 String etatValidation, Double note, String statut) {
+        this.id               = id;
+        this.titre            = titre;
+        this.description      = description;
+        this.professeurNom    = professeurNom;
+        this.professeurPrenom = professeurPrenom;
+        this.etatValidation   = etatValidation;
+        this.note             = note;
+        this.statut=statut;
+
+    }
     public Tache(int id, String titre, String description,
                  String professeurNom, String professeurPrenom,
                  String etatValidation, Double note) {
@@ -19,6 +33,7 @@ public class Tache {
         this.professeurPrenom = professeurPrenom;
         this.etatValidation   = etatValidation;
         this.note             = note;
+
     }
 
     public int    getId()               { return id; }

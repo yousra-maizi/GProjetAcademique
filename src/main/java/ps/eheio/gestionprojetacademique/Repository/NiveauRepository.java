@@ -24,6 +24,9 @@ public class NiveauRepository {
         }
     }
 
+    /**
+     * Récupère tous les niveaux
+     */
     public List<Niveau> findAll() throws DatabaseException {
         List<Niveau> niveaux = new ArrayList<>();
         String req = "SELECT id, libelle FROM niveau ORDER BY id";
@@ -31,10 +34,7 @@ public class NiveauRepository {
             PreparedStatement stmt = connection.prepareStatement(req);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                niveaux.add(new Niveau(
-                        rs.getInt("id"),
-                        rs.getString("libelle")
-                ));
+                niveaux.add(new Niveau(rs.getInt("id"), rs.getString("libelle")));
             }
         } catch (Exception e) {
             throw new DatabaseException("Erreur chargement niveaux", e);
@@ -43,7 +43,7 @@ public class NiveauRepository {
     }
 
     /**
-     * Récupère les niveaux dont le libellé commence par l'année
+     * Récupère les niveaux par année (3, 4, 5)
      * Exemple: annee=3 → 3GI, 3RSI, 3MEC, 3GC
      */
     public List<Niveau> findByAnnee(int annee) throws DatabaseException {
@@ -54,10 +54,7 @@ public class NiveauRepository {
             stmt.setString(1, annee + "%");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                niveaux.add(new Niveau(
-                        rs.getInt("id"),
-                        rs.getString("libelle")
-                ));
+                niveaux.add(new Niveau(rs.getInt("id"), rs.getString("libelle")));
             }
         } catch (Exception e) {
             throw new DatabaseException("Erreur niveaux année " + annee, e);
@@ -65,3 +62,4 @@ public class NiveauRepository {
         return niveaux;
     }
 }
+//deep4

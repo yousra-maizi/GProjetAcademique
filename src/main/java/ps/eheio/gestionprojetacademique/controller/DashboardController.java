@@ -15,7 +15,6 @@ import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionFactory;
 import ps.eheio.gestionprojetacademique.Exceptions.ArchiveException;
 import ps.eheio.gestionprojetacademique.Exceptions.ConnectionException;
 import ps.eheio.gestionprojetacademique.Exceptions.DatabaseException;
-import ps.eheio.gestionprojetacademique.Repository.GroupeRepository;
 import ps.eheio.gestionprojetacademique.Repository.TacheRepository;
 import ps.eheio.gestionprojetacademique.model.*;
 import ps.eheio.gestionprojetacademique.service.AuthService;
@@ -39,33 +38,27 @@ public class DashboardController {
 
     // ── NAV BUTTONS ──
     @FXML private Button btnOverview;
-    @FXML private Button btnGroupes;  // AJOUTER CETTE LIGNE
+    @FXML private Button btnGroupes;
     @FXML private Button btnArchive;
 
     // ── PANELS ──
     @FXML private VBox overviewPanel;
     @FXML private VBox archivePanel;
     @FXML private VBox projetTypesPanel;
-    @FXML private VBox niveauxPanel;   // Utilisé pour afficher 3GI, 3RSI, etc.
+    @FXML private VBox niveauxPanel;
     @FXML private VBox groupesPanel;
     @FXML private VBox membresPanel;
 
-    // ── OVERVIEW ──
+    // ── OVERVIEW STATS ──
     @FXML private Label statGroupes;
     @FXML private Label statProjets;
     @FXML private Label statEtudiants;
     @FXML private Label statArchives;
-
-    // ── ARCHIVE TABLE ──
-    @FXML private TableView<Eheiannee> archiveTable;
-    @FXML private TableColumn<Eheiannee, String> archColAnnee;
-    @FXML private TableColumn<Eheiannee, String> archColStatus;
-    @FXML private TableColumn<Eheiannee, Void> archColActions;
+    @FXML private Label welcomeTitle;
+    @FXML private Label welcomeEyebrow;
 
     // ── BADGE ──
     @FXML private Label badgeAnnee;
-    @FXML private Label welcomeTitle;
-    @FXML private Label welcomeEyebrow;
 
     // ── NIVEAUX (FILIERES) ──
     @FXML private TableView<Niveau> niveauxTable;
@@ -98,32 +91,35 @@ public class DashboardController {
     @FXML private TableColumn<Tache, String> tacheColStatut;
     @FXML private TableColumn<Tache, String> tacheColNote;
 
-    // connexion courante pour consultation archive
-    private Connection consultationConnection = null;
-
-    // ── STATE ──
-    private Button activeNavBtn;
-    private AnneeService anneeservice = new AnneeService();
+    // ── ARCHIVE ──
+    @FXML private TableView<Eheiannee> archiveTable;
+    @FXML private TableColumn<Eheiannee, String> archColAnnee;
+    @FXML private TableColumn<Eheiannee, String> archColStatus;
+    @FXML private TableColumn<Eheiannee, Void> archColActions;
 
     // ── SERVICES ──
+    private Connection consultationConnection = null;
+    private Button activeNavBtn;
+    private AnneeService anneeservice = new AnneeService();
     private NiveauService niveauService;
     private GroupeService groupeService;
 
     // ═══════════════════════════════════════════════════════
     // INIT
     // ═══════════════════════════════════════════════════════
+
     @FXML
     public void initialize() {
         try {
             niveauService = new NiveauService();
             groupeService = new GroupeService();
         } catch (DatabaseException e) {
-            showError("Erreur d'initialisation", "Impossible d'initialiser les services: " + e.getMessage());
+            showError("Erreur d'initialisation", e.getMessage());
         }
 
-        // Configuration des largeurs des colonnes
-        grpColNom.prefWidthProperty().bind(groupesTable.widthProperty().multiply(0.35));
-        grpColProjet.prefWidthProperty().bind(groupesTable.widthProperty().multiply(0.45));
+        // Configuration des largeurs
+        grpColNom.prefWidthProperty().bind(groupesTable.widthProperty().multiply(0.45));
+        grpColProjet.prefWidthProperty().bind(groupesTable.widthProperty().multiply(0.35));
         grpColActions.prefWidthProperty().bind(groupesTable.widthProperty().multiply(0.20));
 
         memColNom.prefWidthProperty().bind(membresTable.widthProperty().multiply(0.25));
@@ -141,6 +137,7 @@ public class DashboardController {
         archColStatus.prefWidthProperty().bind(archiveTable.widthProperty().multiply(0.25));
         archColActions.prefWidthProperty().bind(archiveTable.widthProperty().multiply(0.40));
 
+        // Info admin
         dateLabel.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE, MMMM d yyyy")));
         var admin = AuthService.getLoggedInAdmin();
         if (admin != null) {
@@ -155,24 +152,33 @@ public class DashboardController {
     }
 
     // ═══════════════════════════════════════════════════════
-    // NAV SWITCHING
+    // NAVIGATION
     // ═══════════════════════════════════════════════════════
 
-    @FXML
-    private void showOverview() {
+    @FXML private void showOverview() {
         switchPanel(overviewPanel, btnOverview, "Accueil", "Bienvenue dans l'espace administration.");
         loadOverviewStats();
     }
 
-    @FXML
-    private void showProjetTypes() {
+    @FXML private void showProjetTypes() {
         switchPanel(projetTypesPanel, btnGroupes, "Types de projets", "Sélectionnez PS, PFA ou PFE");
     }
 
-    @FXML
-    private void showArchive() {
+    @FXML private void showArchive() {
         switchPanel(archivePanel, btnArchive, "Archive", "Gérez et consultez les archives universitaires.");
         loadArchive();
+    }
+
+    @FXML private void showFilierePS() {
+        showNiveauxByAnnee(3, "Projet de Synthèse - 3ème année");
+    }
+
+    @FXML private void showFilierePFA() {
+        showNiveauxByAnnee(4, "Projet de Fin d'Année - 4ème année");
+    }
+
+    @FXML private void showFilierePFE() {
+        showNiveauxByAnnee(5, "Projet de Fin d'Étude - 5ème année");
     }
 
     private void switchPanel(VBox panel, Button navBtn, String title, String subtitle) {
@@ -193,34 +199,13 @@ public class DashboardController {
     }
 
     // ═══════════════════════════════════════════════════════
-    // PS - PFA - PFE : AFFICHAGE DES FILIERES PAR ANNEE
+    // AFFICHAGE DES NIVEAUX PAR ANNEE
     // ═══════════════════════════════════════════════════════
 
-    @FXML
-    private void showFilierePS() {
-        showNiveauxByAnnee(3, "Projet de Synthèse - 3ème année");
-    }
-
-    @FXML
-    private void showFilierePFA() {
-        showNiveauxByAnnee(4, "Projet de Fin d'Année - 4ème année");
-    }
-
-    @FXML
-    private void showFilierePFE() {
-        showNiveauxByAnnee(5, "Projet de Fin d'Étude - 5ème année");
-    }
-
-    /**
-     * Affiche les niveaux (filières) d'une année spécifique
-     * Exemple: annee=3 → 3GI, 3RSI, 3MEC, 3GC
-     */
     private void showNiveauxByAnnee(int annee, String titre) {
         try {
-            NiveauService service = getNiveauService();
-            List<Niveau> niveaux = service.getNiveauxByAnnee(annee);
-
-            if (niveaux == null || niveaux.isEmpty()) {
+            List<Niveau> niveaux = niveauService.getNiveauxByAnnee(annee);
+            if (niveaux.isEmpty()) {
                 showInfo("Aucune filière", "Aucune filière trouvée pour l'année " + annee);
                 return;
             }
@@ -230,10 +215,7 @@ public class DashboardController {
                 @Override
                 protected void updateItem(Void item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty) {
-                        setGraphic(null);
-                        return;
-                    }
+                    if (empty) { setGraphic(null); return; }
                     Niveau niveau = getTableView().getItems().get(getIndex());
                     Button btn = new Button("👁 Voir les groupes");
                     btn.setStyle("-fx-background-color: #1e3a5f; -fx-text-fill: #60a5fa;" +
@@ -250,18 +232,17 @@ public class DashboardController {
             pageSubtitle.setText("Sélectionnez une filière");
 
         } catch (DatabaseException e) {
-            showError("Erreur", "Erreur: " + e.getMessage());
-            e.printStackTrace();
+            showError("Erreur", e.getMessage());
         }
     }
 
-    /**
-     * Affiche les groupes d'un niveau spécifique (ex: 3GI)
-     */
+    // ═══════════════════════════════════════════════════════
+    // AFFICHAGE DES GROUPES PAR NIVEAU
+    // ═══════════════════════════════════════════════════════
+
     private void showGroupesByNiveau(Niveau niveau) {
         try {
-            GroupeRepository repo = getGroupeRepository();
-            List<Groupe> groupes = repo.findByNiveau(niveau.getId());
+            List<Groupe> groupes = groupeService.getGroupesByNiveau(niveau.getId());
 
             grpColNom.setCellValueFactory(new PropertyValueFactory<>("libelle"));
             grpColProjet.setCellValueFactory(new PropertyValueFactory<>("projetLibelle"));
@@ -269,10 +250,7 @@ public class DashboardController {
                 @Override
                 protected void updateItem(Void item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty) {
-                        setGraphic(null);
-                        return;
-                    }
+                    if (empty) { setGraphic(null); return; }
                     Groupe groupe = getTableView().getItems().get(getIndex());
                     Button btn = new Button("👁 Consulter");
                     btn.setStyle("-fx-background-color: #1e3a5f; -fx-text-fill: #60a5fa;" +
@@ -290,21 +268,89 @@ public class DashboardController {
             pageSubtitle.setText("Groupes de " + niveau.getLibelle());
 
         } catch (DatabaseException e) {
-            showError("Erreur", "Erreur: " + e.getMessage());
+            showError("Erreur", e.getMessage());
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // CONSULTATION D'UN GROUPE
+    // ═══════════════════════════════════════════════════════
+
+    private void handleConsulterGroupe(Groupe groupe) {
+        try {
+            Connection conn = (consultationConnection != null) ? consultationConnection : ConnectionFactory.getActiveConnection();
+
+            TacheRepository tacheRepo = new TacheRepository(conn);
+
+            GroupeService service;
+            if (consultationConnection != null) {
+                service = new GroupeService(consultationConnection);
+            } else {
+                service = groupeService;
+            }
+
+            // Passer le niveauId pour filtrer les étudiants
+            List<Etudiant> etudiants = service.getEtudiantsByGroupeAndNiveau(groupe.getId(), groupe.getNiveauId());
+
+            memColNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
+            memColPrenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
+            memColClasse.setCellValueFactory(new PropertyValueFactory<>("classeLibelle"));
+            memColNiveau.setCellValueFactory(new PropertyValueFactory<>("niveauLibelle"));
+
+            membresTable.setItems(FXCollections.observableArrayList(etudiants));
+
+            List<Tache> taches = tacheRepo.findByGroupe(groupe.getId());
+            tacheColTitre.setCellValueFactory(new PropertyValueFactory<>("titre"));
+            tacheColDesc.setCellValueFactory(new PropertyValueFactory<>("description"));
+            tacheColProf.setCellValueFactory(cellData ->
+                    new javafx.beans.property.SimpleStringProperty(
+                            cellData.getValue().getProfesseurPrenom() + " " + cellData.getValue().getProfesseurNom()
+                    ));
+            tacheColStatut.setCellValueFactory(new PropertyValueFactory<>("etatValidation"));
+            tacheColNote.setCellValueFactory(new PropertyValueFactory<>("note"));
+
+            tachesTable.setItems(FXCollections.observableArrayList(taches));
+
+            membresTitre.setText(groupe.getLibelle());
+            membresProjet.setText("Projet : " + groupe.getProjetLibelle());
+
+            groupesPanel.setVisible(false);
+            membresPanel.setVisible(true);
+            pageTitle.setText(groupe.getLibelle());
+            pageSubtitle.setText("Membres et tâches assignées");
+
+        } catch (Exception e) {
+            showError("Erreur", e.getMessage());
             e.printStackTrace();
         }
     }
 
     // ═══════════════════════════════════════════════════════
-    // CHARGEMENT DES DONNÉES
+    // BOUTONS RETOUR
     // ═══════════════════════════════════════════════════════
 
-    private void loadOverviewStats() {
-        statGroupes.setText("8");
-        statProjets.setText("12");
-        statEtudiants.setText("64");
-        statArchives.setText("3");
+    @FXML private void retourProjetTypes() {
+        niveauxPanel.setVisible(false);
+        projetTypesPanel.setVisible(true);
+        pageTitle.setText("Types de projets");
+        pageSubtitle.setText("Sélectionnez PS, PFA ou PFE");
     }
+
+    @FXML private void retourNiveaux() {
+        groupesPanel.setVisible(false);
+        niveauxPanel.setVisible(true);
+        pageSubtitle.setText("Sélectionnez une filière");
+    }
+
+    @FXML private void retourGroupes() {
+        membresPanel.setVisible(false);
+        groupesPanel.setVisible(true);
+        pageSubtitle.setText("Groupes de " + groupesTitre.getText());
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // ARCHIVE
+    // ═══════════════════════════════════════════════════════
 
     private void loadArchive() {
         archColAnnee.setCellValueFactory(new PropertyValueFactory<>("libelle"));
@@ -317,10 +363,7 @@ public class DashboardController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                    return;
-                }
+                if (empty) { setGraphic(null); return; }
 
                 Eheiannee annee = getTableView().getItems().get(getIndex());
                 HBox box = new HBox(8);
@@ -332,17 +375,12 @@ public class DashboardController {
                 }
 
                 Button btnConsulter = new Button("👁 Consulter");
-                btnConsulter.setOnAction(e -> handleConsulter(annee));
+                btnConsulter.setOnAction(e -> handleConsulterArchive(annee));
                 box.getChildren().add(btnConsulter);
-
                 setGraphic(box);
             }
         });
     }
-
-    // ═══════════════════════════════════════════════════════
-    // ACTIONS ARCHIVE
-    // ═══════════════════════════════════════════════════════
 
     private void handleArchiver(Eheiannee annee) {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
@@ -361,10 +399,10 @@ public class DashboardController {
         });
     }
 
-    private void handleConsulter(Eheiannee annee) {
+    private void handleConsulterArchive(Eheiannee annee) {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Basculer vers " + annee.getLibelle());
-        confirm.setHeaderText("Voulez-vous basculer vers " + annee.getLibelle() + " ?");
+        confirm.setTitle("Consulter " + annee.getLibelle());
+        confirm.setHeaderText("Basculer vers " + annee.getLibelle() + " ?");
         confirm.setContentText("Les données affichées seront celles de cette année.");
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
@@ -376,153 +414,22 @@ public class DashboardController {
                     groupeService = new GroupeService(consultationConnection);
 
                     showProjetTypes();
-
-                } catch (DatabaseException e) {
-                    showError("Erreur de connexion", "Impossible de se connecter à " + annee.getLibelle());
+                } catch (Exception e) {
+                    showError("Erreur", "Impossible de se connecter");
                 }
             }
         });
     }
 
     // ═══════════════════════════════════════════════════════
-    // CONSULTATION GROUPE
-    // ═══════════════════════════════════════════════════════
-
-    private void handleConsulterGroupe(Groupe groupe) {
-        try {
-            Connection conn = (consultationConnection != null) ? consultationConnection : ConnectionFactory.getActiveConnection();
-
-            GroupeRepository groupeRepo = new GroupeRepository(conn);
-            TacheRepository tacheRepo = new TacheRepository(conn);
-
-            List<Etudiant> etudiants = groupeRepo.findEtudiantsByGroupe(groupe.getId());
-
-            memColNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
-            memColPrenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
-            memColClasse.setCellValueFactory(new PropertyValueFactory<>("classeLibelle"));
-            memColNiveau.setCellValueFactory(new PropertyValueFactory<>("niveauLibelle"));
-
-            membresTable.setItems(FXCollections.observableArrayList(etudiants));
-
-            List<Tache> taches = tacheRepo.findByGroupe(groupe.getId());
-            tacheColTitre.setCellValueFactory(new PropertyValueFactory<>("titre"));
-            tacheColDesc.setCellValueFactory(new PropertyValueFactory<>("description"));
-
-            tacheColProf.setCellValueFactory(cellData ->
-                    new javafx.beans.property.SimpleStringProperty(
-                            cellData.getValue().getProfesseurPrenom() + " " + cellData.getValue().getProfesseurNom()
-                    ));
-
-            tacheColStatut.setCellValueFactory(new PropertyValueFactory<>("etatValidation"));
-            tacheColStatut.setCellFactory(col -> new TableCell<>() {
-                @Override
-                protected void updateItem(String statut, boolean empty) {
-                    super.updateItem(statut, empty);
-                    if (empty || statut == null || statut.equals("—")) {
-                        setText("—");
-                        setStyle("-fx-text-fill: #6b7280;");
-                    } else if (statut.toLowerCase().contains("valid")) {
-                        setText(statut);
-                        setStyle("-fx-text-fill: #34d399; -fx-font-weight: bold;");
-                    } else if (statut.toLowerCase().contains("rejet")) {
-                        setText(statut);
-                        setStyle("-fx-text-fill: #f87171; -fx-font-weight: bold;");
-                    } else {
-                        setText(statut);
-                        setStyle("-fx-text-fill: #fbbf24;");
-                    }
-                }
-            });
-
-            tacheColNote.setCellValueFactory(new PropertyValueFactory<>("note"));
-            tacheColNote.setCellFactory(col -> new TableCell<>() {
-                @Override
-                protected void updateItem(String note, boolean empty) {
-                    super.updateItem(note, empty);
-                    if (empty || note == null || note.equals("—")) {
-                        setText("—");
-                        setStyle("-fx-text-fill: #6b7280;");
-                    } else {
-                        setText(note);
-                        try {
-                            double val = Double.parseDouble(note);
-                            if (val >= 0.7) {
-                                setStyle("-fx-text-fill: #34d399; -fx-font-weight: bold;");
-                            } else if (val >= 0.5) {
-                                setStyle("-fx-text-fill: #fbbf24; -fx-font-weight: bold;");
-                            } else {
-                                setStyle("-fx-text-fill: #f87171; -fx-font-weight: bold;");
-                            }
-                        } catch (NumberFormatException e) {
-                            setStyle("-fx-text-fill: #6b7280;");
-                        }
-                    }
-                }
-            });
-
-            tachesTable.setItems(FXCollections.observableArrayList(taches));
-
-            membresTitre.setText(groupe.getLibelle());
-            membresProjet.setText("Projet : " + groupe.getProjetLibelle());
-
-            overviewPanel.setVisible(false);
-            groupesPanel.setVisible(false);
-            archivePanel.setVisible(false);
-            membresPanel.setVisible(true);
-
-            pageTitle.setText(groupe.getLibelle());
-            pageSubtitle.setText("Membres et tâches assignées");
-
-        } catch (Exception e) {
-            showError("Erreur", "Erreur: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    // ═══════════════════════════════════════════════════════
-    // BOUTONS RETOUR
-    // ═══════════════════════════════════════════════════════
-
-    @FXML
-    private void retourProjetTypes() {
-        niveauxPanel.setVisible(false);
-        projetTypesPanel.setVisible(true);
-        pageTitle.setText("Types de projets");
-        pageSubtitle.setText("Sélectionnez PS, PFA ou PFE");
-    }
-
-    @FXML
-    private void retourNiveaux() {
-        groupesPanel.setVisible(false);
-        niveauxPanel.setVisible(true);
-        pageTitle.setText(pageTitle.getText());
-        pageSubtitle.setText("Sélectionnez une filière");
-    }
-
-    @FXML
-    private void retourGroupes() {
-        membresPanel.setVisible(false);
-        groupesPanel.setVisible(true);
-        pageTitle.setText(groupesTitre.getText());
-        pageSubtitle.setText("Groupes de " + groupesTitre.getText());
-    }
-
-    // ═══════════════════════════════════════════════════════
     // UTILITAIRES
     // ═══════════════════════════════════════════════════════
 
-    @FXML
-    private void handleLogout() {
-        AuthService.logout();
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/ps/eheio/gestionprojetacademique/view/LoginView1.fxml"));
-            Stage stage = (Stage) pageTitle.getScene().getWindow();
-            stage.setScene(new Scene(root, 1100, 680));
-            stage.setTitle("EHEIO Administration");
-            stage.setResizable(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void loadOverviewStats() {
+        statGroupes.setText("8");
+        statProjets.setText("12");
+        statEtudiants.setText("64");
+        statArchives.setText("3");
     }
 
     private void updateBadgeAnnee(String dbName, boolean isActive) {
@@ -536,26 +443,9 @@ public class DashboardController {
         }
     }
 
-    private NiveauService getNiveauService() throws DatabaseException {
-        if (niveauService == null) {
-            niveauService = (consultationConnection != null)
-                    ? new NiveauService(consultationConnection)
-                    : new NiveauService();
-        }
-        return niveauService;
-    }
-
-    private GroupeRepository getGroupeRepository() throws DatabaseException {
-        if (consultationConnection != null) {
-            return new GroupeRepository(consultationConnection);
-        }
-        return new GroupeRepository();
-    }
-
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
-        alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
@@ -563,42 +453,35 @@ public class DashboardController {
     private void showInfo(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
-        alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
 
-    @FXML
-    private void rechercherGroupe() {
-        String query = groupSearch.getText().trim().toLowerCase();
-
-        if (query.isEmpty()) {
-            try {
-                GroupeRepository repo = getGroupeRepository();
-                groupesTable.setItems(FXCollections.observableArrayList(repo.findAll()));
-            } catch (DatabaseException e) {
-                showError("Erreur", e.getMessage());
-            }
-            return;
+    @FXML private void handleLogout() {
+        AuthService.logout();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/ps/eheio/gestionprojetacademique/view/LoginView1.fxml"));
+            Stage stage = (Stage) pageTitle.getScene().getWindow();
+            stage.setScene(new Scene(root, 1100, 680));
+            stage.setTitle("EHEIO Administration");
+            stage.setResizable(false);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    @FXML private void rechercherGroupe() {
+        String query = groupSearch.getText().trim().toLowerCase();
+        if (query.isEmpty()) return;
 
         try {
-            GroupeRepository repo = getGroupeRepository();
-            List<Groupe> tousLesGroupes = repo.findAll();
-
+            List<Groupe> tousLesGroupes = groupeService.getAllGroupes();
             List<Groupe> filtres = tousLesGroupes.stream()
                     .filter(g -> g.getLibelle().toLowerCase().contains(query) ||
                             g.getProjetLibelle().toLowerCase().contains(query))
                     .collect(java.util.stream.Collectors.toList());
-
             groupesTable.setItems(FXCollections.observableArrayList(filtres));
-
-            if (filtres.isEmpty()) {
-                pageSubtitle.setText("Aucun groupe trouvé pour : " + query);
-            } else {
-                pageSubtitle.setText(filtres.size() + " groupe(s) trouvé(s)");
-            }
-
+            pageSubtitle.setText(filtres.size() + " groupe(s) trouvé(s)");
         } catch (DatabaseException e) {
             showError("Erreur recherche", e.getMessage());
         }
