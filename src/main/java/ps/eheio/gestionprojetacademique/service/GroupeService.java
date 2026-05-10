@@ -10,23 +10,41 @@ import java.util.List;
 
 public class GroupeService {
 
-    private final GroupeRepository repo;
+    private final GroupeRepository groupeRepo;
 
-    // connexion passée depuis le controller
     public GroupeService(Connection connection) {
-        this.repo = new GroupeRepository(connection);
+        this.groupeRepo = new GroupeRepository(connection);
     }
 
-    // utilise la connexion active par défaut
     public GroupeService() throws DatabaseException {
-        this.repo = new GroupeRepository();
+        this.groupeRepo = new GroupeRepository();
     }
 
+    /**
+     * Récupère tous les groupes
+     */
     public List<Groupe> getAllGroupes() throws DatabaseException {
-        return repo.findAll();
+        return groupeRepo.findAll();
     }
 
+    /**
+     * Récupère les groupes d'un niveau
+     */
+    public List<Groupe> getGroupesByNiveau(int niveauId) throws DatabaseException {
+        return groupeRepo.findByNiveau(niveauId);
+    }
+
+    /**
+     * Récupère les groupes d'une filière (classe)
+     */
+    public List<Groupe> getGroupesByClasse(int classeId) throws DatabaseException {
+        return groupeRepo.findByClasse(classeId);
+    }
+
+    /**
+     * Récupère les étudiants d'un groupe
+     */
     public List<Etudiant> getEtudiantsByGroupe(int groupeId) throws DatabaseException {
-        return repo.findEtudiantsByGroupe(groupeId);
+        return groupeRepo.findEtudiantsByGroupe(groupeId);
     }
 }

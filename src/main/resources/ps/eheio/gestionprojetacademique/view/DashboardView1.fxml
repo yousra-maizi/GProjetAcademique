@@ -2,243 +2,308 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.text.*?>
-
-
-
-        <?import javafx.scene.layout.*?>
-        <?import javafx.scene.control.*?>
-        <?import javafx.geometry.Insets?>
 
 <BorderPane
-xmlns:fx="http://javafx.com/fxml"
-fx:controller="ps.eheio.gestionprojetacademique.controller.DashboardController"
-styleClass="dash-root"
-prefWidth="1100" prefHeight="700"
-stylesheets="@../styles/dashboard.css">
+        xmlns:fx="http://javafx.com/fxml"
+        fx:controller="ps.eheio.gestionprojetacademique.controller.DashboardController"
+        styleClass="dash-root"
+        prefWidth="1100" prefHeight="700"
+        stylesheets="@../styles/dashboard.css">
 
-<!-- ── SIDEBAR ── -->
-<left>
-    <VBox styleClass="sidebar" prefWidth="200" spacing="4">
-        <padding><Insets top="20" bottom="20" left="12" right="12"/></padding>
+    <!-- ── SIDEBAR ── -->
+    <left>
+        <VBox styleClass="sidebar" spacing="4">
+            <padding>
+                <Insets top="20" bottom="20" left="12" right="12"/>
+            </padding>
 
-        <!-- Brand -->
-        <HBox spacing="10" alignment="CENTER_LEFT">
-            <padding><Insets bottom="24"/></padding>
-            <Label text="E" styleClass="sidebar-brand-box, sidebar-brand-letter"/>
-            <VBox spacing="2">
-                <Label text="EHEI Oujda"    styleClass="sidebar-title"/>
-                <Label text="GESTION DE PROJETS" styleClass="sidebar-subtitle"/>
+            <!-- Brand -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <padding>
+                    <Insets bottom="24"/>
+                </padding>
+                <Label text="E" styleClass="sidebar-brand-box, sidebar-brand-letter"/>
+                <VBox spacing="2">
+                    <Label text="EHEI Oujda" styleClass="sidebar-title"/>
+                    <Label text="GESTION DE PROJETS" styleClass="sidebar-subtitle"/>
+                </VBox>
+            </HBox>
+
+            <!-- Nav -->
+            <Button fx:id="btnOverview" text="🏠  Accueil" styleClass="nav-btn, nav-active" maxWidth="Infinity" onAction="#showOverview"/>
+            <Button fx:id="btnGroupes" text="👥  Groupes" styleClass="nav-btn" maxWidth="Infinity" onAction="#showProjetTypes"/>
+            <Button fx:id="btnArchive" text="📂  Archive" styleClass="nav-btn" maxWidth="Infinity" onAction="#showArchive"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+            <Separator styleClass="sidebar-sep"/>
+
+            <!-- Admin info -->
+            <VBox spacing="2" styleClass="sidebar-user">
+                <Label fx:id="adminNameLabel" text="Admin" styleClass="admin-name"/>
+                <Label fx:id="adminRoleLabel" text="ADMINISTRATEUR" styleClass="admin-role"/>
             </VBox>
-        </HBox>
-
-        <!-- Nav -->
-        <Button fx:id="btnOverview"  text="🏠  Accueil"  styleClass="nav-btn, nav-active" maxWidth="Infinity" onAction="#showOverview"/>
-        <Button fx:id="btnGroupes"   text="👥  Groupes"  styleClass="nav-btn"             maxWidth="Infinity" onAction="#showGroupes"/>
-        <Button fx:id="btnArchive"   text="📂  Archive"  styleClass="nav-btn"             maxWidth="Infinity" onAction="#showArchive"/>
-
-        <Region VBox.vgrow="ALWAYS"/>
-        <Separator styleClass="sidebar-sep"/>
-
-        <!-- Admin info -->
-        <VBox spacing="2" styleClass="sidebar-user">
-            <Label fx:id="adminNameLabel" text="Admin"         styleClass="admin-name"/>
-            <Label fx:id="adminRoleLabel" text="ADMINISTRATEUR" styleClass="admin-role"/>
+            <Region prefHeight="8"/>
+            <Button text="⏻  Déconnexion" styleClass="btn-logout" maxWidth="Infinity" onAction="#handleLogout"/>
         </VBox>
-        <Region prefHeight="8"/>
-        <Button text="⏻  Déconnexion" styleClass="btn-logout" maxWidth="Infinity" onAction="#handleLogout"/>
-    </VBox>
-</left>
+    </left>
 
-<!-- ── MAIN ── -->
-<center>
-    <VBox styleClass="main-area">
+    <!-- ── MAIN ── -->
+    <center>
+        <VBox styleClass="main-area">
 
-        <!-- Top Bar -->
-        <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="12">
-            <padding><Insets top="16" bottom="16" left="28" right="28"/></padding>
-            <VBox spacing="2" HBox.hgrow="ALWAYS">
-                <Label fx:id="pageTitle"    text="Accueil"  styleClass="page-title"/>
-                <Label fx:id="pageSubtitle" text="Bienvenue dans l'espace administration." styleClass="page-subtitle"/>
-            </VBox>
-            <!-- Badge année universitaire -->
-            <Label fx:id="badgeAnnee" text="🟢 2025-2026" styleClass="badge-annee-active"/>
-            <Label fx:id="dateLabel"  text=""             styleClass="date-label"/>
-        </HBox>
+            <!-- Top Bar -->
+            <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="12">
+                <padding>
+                    <Insets top="16" bottom="16" left="28" right="28"/>
+                </padding>
+                <VBox spacing="2" HBox.hgrow="ALWAYS">
+                    <Label fx:id="pageTitle" text="Accueil" styleClass="page-title"/>
+                    <Label fx:id="pageSubtitle" text="Bienvenue dans l'espace administration." styleClass="page-subtitle"/>
+                </VBox>
+                <Label fx:id="badgeAnnee" text="🟢 2025-2026" styleClass="badge-annee-active"/>
+                <Label fx:id="dateLabel" text="" styleClass="date-label"/>
+            </HBox>
 
-        <!-- Content -->
-        <StackPane VBox.vgrow="ALWAYS" styleClass="content-stack">
-            <padding><Insets top="0" bottom="24" left="28" right="28"/></padding>
+            <!-- Content -->
+            <StackPane VBox.vgrow="ALWAYS" styleClass="content-stack">
+                <padding>
+                    <Insets top="0" bottom="24" left="28" right="28"/>
+                </padding>
 
-            <!-- ══ OVERVIEW ══ -->
-            <VBox fx:id="overviewPanel" spacing="16" visible="true">
-                <padding><Insets top="20"/></padding>
+                <!-- ══ OVERVIEW ══ -->
+                <VBox fx:id="overviewPanel" spacing="16" visible="true">
+                    <padding>
+                        <Insets top="20"/>
+                    </padding>
 
-                <!-- Welcome banner -->
-                <HBox styleClass="welcome-banner" spacing="0">
-                    <padding><Insets top="24" bottom="24" left="24" right="24"/></padding>
-                    <VBox spacing="8" HBox.hgrow="ALWAYS">
-                        <Label fx:id="welcomeEyebrow" text="ESPACE ADMINISTRATEUR" styleClass="welcome-eyebrow"/>
-                        <Label fx:id="welcomeTitle"   text="Bonjour, Admin !"      styleClass="welcome-title"/>
-                        <Label text="Gérez les groupes, consultez les archives et administrez&#10;les années universitaires depuis cet espace." styleClass="welcome-sub" wrapText="true"/>
-                    </VBox>
-                </HBox>
+                    <HBox styleClass="welcome-banner" spacing="0">
+                        <padding>
+                            <Insets top="24" bottom="24" left="24" right="24"/>
+                        </padding>
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label fx:id="welcomeEyebrow" text="ESPACE ADMINISTRATEUR" styleClass="welcome-eyebrow"/>
+                            <Label fx:id="welcomeTitle" text="Bonjour, Admin !" styleClass="welcome-title"/>
+                            <Label text="Gérez les groupes, consultez les archives et administrez&#10;les années universitaires depuis cet espace." styleClass="welcome-sub" wrapText="true"/>
+                        </VBox>
+                    </HBox>
 
-                <!-- Stats + Actions rapides -->
-                <HBox spacing="16">
+                    <HBox spacing="16">
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
+                                <padding>
+                                    <Insets top="16" bottom="16" left="16" right="16"/>
+                                </padding>
+                                <Label text="👥" styleClass="stat-icon-box, stat-icon-blue"/>
+                                <VBox spacing="2">
+                                    <Label fx:id="statGroupes" text="—" styleClass="stat-number"/>
+                                    <Label text="GROUPES ACTIFS" styleClass="stat-desc"/>
+                                </VBox>
+                            </HBox>
 
-                    <!-- Stats verticales -->
-                    <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
+                                <padding>
+                                    <Insets top="16" bottom="16" left="16" right="16"/>
+                                </padding>
+                                <Label text="✅" styleClass="stat-icon-box, stat-icon-green"/>
+                                <VBox spacing="2">
+                                    <Label fx:id="statProjets" text="—" styleClass="stat-number"/>
+                                    <Label text="PROJETS ACTIFS" styleClass="stat-desc"/>
+                                </VBox>
+                            </HBox>
 
-                        <!-- Card 1 -->
-                        <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
-                            <padding><Insets top="16" bottom="16" left="16" right="16"/></padding>
-                            <Label text="👥" styleClass="stat-icon-box, stat-icon-blue"/>
-                            <VBox spacing="2">
-                                <Label fx:id="statGroupes" text="—" styleClass="stat-number"/>
-                                <Label text="GROUPES ACTIFS"       styleClass="stat-desc"/>
-                            </VBox>
-                        </HBox>
+                            <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
+                                <padding>
+                                    <Insets top="16" bottom="16" left="16" right="16"/>
+                                </padding>
+                                <Label text="🎓" styleClass="stat-icon-box, stat-icon-yellow"/>
+                                <VBox spacing="2">
+                                    <Label fx:id="statEtudiants" text="—" styleClass="stat-number"/>
+                                    <Label text="ÉTUDIANTS INSCRITS" styleClass="stat-desc"/>
+                                </VBox>
+                            </HBox>
 
-                        <!-- Card 2 -->
-                        <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
-                            <padding><Insets top="16" bottom="16" left="16" right="16"/></padding>
-                            <Label text="✅" styleClass="stat-icon-box, stat-icon-green"/>
-                            <VBox spacing="2">
-                                <Label fx:id="statProjets" text="—" styleClass="stat-number"/>
-                                <Label text="PROJETS ACTIFS"       styleClass="stat-desc"/>
-                            </VBox>
-                        </HBox>
+                            <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
+                                <padding>
+                                    <Insets top="16" bottom="16" left="16" right="16"/>
+                                </padding>
+                                <Label text="🗂" styleClass="stat-icon-box, stat-icon-red"/>
+                                <VBox spacing="2">
+                                    <Label fx:id="statArchives" text="—" styleClass="stat-number"/>
+                                    <Label text="ANNÉES ARCHIVÉES" styleClass="stat-desc"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
 
-                        <!-- Card 3 -->
-                        <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
-                            <padding><Insets top="16" bottom="16" left="16" right="16"/></padding>
-                            <Label text="🎓" styleClass="stat-icon-box, stat-icon-yellow"/>
-                            <VBox spacing="2">
-                                <Label fx:id="statEtudiants" text="—" styleClass="stat-number"/>
-                                <Label text="ÉTUDIANTS INSCRITS"   styleClass="stat-desc"/>
-                            </VBox>
-                        </HBox>
+                        <VBox styleClass="quick-actions-box" spacing="12" prefWidth="220">
+                            <padding>
+                                <Insets top="20" bottom="20" left="16" right="16"/>
+                            </padding>
+                            <Label text="Actions rapides" styleClass="quick-title"/>
+                            <Button text="🗂  Gérer les groupes" styleClass="btn-quick" onAction="#showProjetTypes"/>
+                            <Button text="📋  Consulter l'archive" styleClass="btn-quick-outline" onAction="#showArchive"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
 
-                        <!-- Card 4 -->
-                        <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
-                            <padding><Insets top="16" bottom="16" left="16" right="16"/></padding>
-                            <Label text="🗂" styleClass="stat-icon-box, stat-icon-red"/>
-                            <VBox spacing="2">
-                                <Label fx:id="statArchives" text="—" styleClass="stat-number"/>
-                                <Label text="ANNÉES ARCHIVÉES"     styleClass="stat-desc"/>
-                            </VBox>
-                        </HBox>
+                <!-- ══ TYPES DE PROJETS (PS / PFA / PFE) ══ -->
+                <VBox fx:id="projetTypesPanel" spacing="20" visible="false">
+                    <padding>
+                        <Insets top="30" left="10" right="10"/>
+                    </padding>
 
-                    </VBox>
+                    <Label text="Sélectionnez le type de projet" styleClass="panel-heading"/>
+                    <Label text="Choisissez une année pour voir les filières et groupes correspondants" styleClass="card-sub"/>
 
-                    <!-- Actions rapides -->
-                    <VBox styleClass="quick-actions-box" spacing="12" prefWidth="220">
-                        <padding><Insets top="20" bottom="20" left="16" right="16"/></padding>
-                        <Label text="Actions rapides" styleClass="quick-title"/>
-                        <Button text="🗂  Gérer les groupes"   styleClass="btn-quick"         onAction="#showGroupes"/>
-                        <Button text="📋  Consulter l'archive" styleClass="btn-quick-outline" onAction="#showArchive"/>
-                    </VBox>
+                    <!-- Carte PS -->
+                    <HBox styleClass="stat-card-h" spacing="20" alignment="CENTER_LEFT">
+                        <padding>
+                            <Insets top="24" bottom="24" left="28" right="28"/>
+                        </padding>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="📘 Projet de Synthèse (PS)" styleClass="panel-title"/>
+                            <Label text="3ème année" styleClass="card-sub"/>
+                            <Label text="Projet de fin de 3ème année - Synthèse des connaissances" styleClass="card-desc" wrapText="true"/>
+                        </VBox>
+                        <Button text="👁 Consulter les groupes" styleClass="btn-primary" onAction="#showFilierePS"/>
+                    </HBox>
 
-                </HBox>
-            </VBox>
+                    <!-- Carte PFA -->
+                    <HBox styleClass="stat-card-h" spacing="20" alignment="CENTER_LEFT">
+                        <padding>
+                            <Insets top="24" bottom="24" left="28" right="28"/>
+                        </padding>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="📗 Projet de Fin d'Année (PFA)" styleClass="panel-title"/>
+                            <Label text="4ème année" styleClass="card-sub"/>
+                            <Label text="Projet de fin de 4ème année - Application pratique" styleClass="card-desc" wrapText="true"/>
+                        </VBox>
+                        <Button text="👁 Consulter les groupes" styleClass="btn-primary" onAction="#showFilierePFA"/>
+                    </HBox>
 
-            <!-- ══ GROUPES ══ -->
-            <VBox fx:id="groupesPanel" spacing="16" visible="false">
-                <padding><Insets top="20"/></padding>
-                <HBox alignment="CENTER_LEFT" spacing="12">
-                    <Label text="Gestion des Groupes" styleClass="panel-heading"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                </HBox>
-                <!-- Bouton search groupe-->
-                <HBox spacing="12" alignment="CENTER_LEFT">
-                    <TextField fx:id="groupSearch" promptText="🔍  Rechercher un groupe..."
-                               styleClass="search-field" HBox.hgrow="ALWAYS"/>
-                <!--    <Button text="Rechercher" styleClass="btn-primary" onAction="#rechercherGroupe"/>-->
-                </HBox>
-                <TableView fx:id="groupesTable" styleClass="data-table"
-                           VBox.vgrow="ALWAYS"
-                           >
-                    <columns>
-                        <TableColumn fx:id="grpColNom"     text="Groupe"  prefWidth="200"/>
-                        <TableColumn fx:id="grpColProjet"  text="Projet"  prefWidth="300"/>
-                        <TableColumn fx:id="grpColActions" text="Actions" prefWidth="160"/>
-                    </columns>
-                </TableView>
-            </VBox>
+                    <!-- Carte PFE -->
+                    <HBox styleClass="stat-card-h" spacing="20" alignment="CENTER_LEFT">
+                        <padding>
+                            <Insets top="24" bottom="24" left="28" right="28"/>
+                        </padding>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="📕 Projet de Fin d'Études (PFE)" styleClass="panel-title"/>
+                            <Label text="5ème année" styleClass="card-sub"/>
+                            <Label text="Projet de fin d'études - Projet professionnel" styleClass="card-desc" wrapText="true"/>
+                        </VBox>
+                        <Button text="👁 Consulter les groupes" styleClass="btn-primary" onAction="#showFilierePFE"/>
+                    </HBox>
+                </VBox>
 
+                <!-- ══ FILIERES (NIVEAUX) ══ -->
+                <VBox fx:id="niveauxPanel" spacing="16" visible="false">
+                    <padding>
+                        <Insets top="20"/>
+                    </padding>
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <Button text="← Retour" styleClass="btn-secondary" onAction="#retourProjetTypes"/>
+                        <Label text="Filières" styleClass="panel-heading"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                    <TableView fx:id="niveauxTable" styleClass="data-table" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="nivColLibelle" text="Filière"/>
+                            <TableColumn fx:id="nivColActions" text="Actions"/>
+                        </columns>
+                    </TableView>
+                </VBox>
 
-            <!-- ══ MEMBRES D'UN GROUPE ══ -->
-            <!-- ══ MEMBRES D'UN GROUPE ══ -->
-            <VBox fx:id="membresPanel" spacing="16" visible="false">
-                <padding><Insets top="20"/></padding>
+                <!-- ══ GROUPES ══ -->
+                <VBox fx:id="groupesPanel" spacing="16" visible="false">
+                    <padding>
+                        <Insets top="20"/>
+                    </padding>
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <Button text="← Retour" styleClass="btn-secondary" onAction="#retourNiveaux"/>
+                        <Label fx:id="groupesTitre" text="Groupes" styleClass="panel-heading"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <TextField fx:id="groupSearch" promptText="🔍 Rechercher un groupe..." styleClass="search-field" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                    <TableView fx:id="groupesTable" styleClass="data-table" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="grpColNom" text="Groupe"/>
+                            <TableColumn fx:id="grpColProjet" text="Projet"/>
+                            <TableColumn fx:id="grpColActions" text="Actions"/>
+                        </columns>
+                    </TableView>
+                </VBox>
 
-                <!-- Header -->
-                <HBox alignment="CENTER_LEFT" spacing="12">
-                    <Button fx:id="btnRetourGroupes" text="← Retour"
-                            styleClass="btn-secondary" onAction="#retourGroupes"/>
-                    <Label fx:id="membresTitre" text="Membres du groupe"
-                           styleClass="panel-heading"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label fx:id="membresProjet" text="" styleClass="panel-heading"/>
-                </HBox>
+                <!-- ══ MEMBRES D'UN GROUPE ══ -->
+                <VBox fx:id="membresPanel" spacing="16" visible="false">
+                    <padding>
+                        <Insets top="20"/>
+                    </padding>
 
-                <!-- Deux colonnes : membres | tâches -->
-                <HBox spacing="16" VBox.vgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <Button fx:id="btnRetourGroupes" text="← Retour" styleClass="btn-secondary" onAction="#retourGroupes"/>
+                        <Label fx:id="membresTitre" text="Membres du groupe" styleClass="panel-heading"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="membresProjet" text="" styleClass="panel-heading"/>
+                    </HBox>
 
-                    <!-- Colonne membres -->
-                    <VBox styleClass="panel-box" spacing="12" HBox.hgrow="ALWAYS">
-                        <padding><Insets top="16" bottom="16" left="16" right="16"/></padding>
-                        <Label text="👥  Étudiants" styleClass="panel-title"/>
-                        <Separator/>
-                        <TableView fx:id="membresTable" styleClass="data-table" VBox.vgrow="ALWAYS" >
-                            <columns>
-                                <TableColumn fx:id="memColNom"    text="Nom"    prefWidth="180"/>
-                                <TableColumn fx:id="memColPrenom" text="Prénom" prefWidth="180"/>
-                                <TableColumn fx:id="memColClasse" text="Classe" prefWidth="160"/>
-                                <TableColumn fx:id="memColNiveau" text="Niveau" prefWidth="130"/>
-                            </columns>
-                        </TableView>
-                    </VBox>
+                    <HBox spacing="16" VBox.vgrow="ALWAYS">
+                        <VBox styleClass="panel-box" spacing="12" HBox.hgrow="ALWAYS">
+                            <padding>
+                                <Insets top="16" bottom="16" left="16" right="16"/>
+                            </padding>
+                            <Label text="👥 Étudiants" styleClass="panel-title"/>
+                            <Separator/>
+                            <TableView fx:id="membresTable" styleClass="data-table" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="memColNom" text="Nom"/>
+                                    <TableColumn fx:id="memColPrenom" text="Prénom"/>
+                                    <TableColumn fx:id="memColClasse" text="Classe"/>
+                                    <TableColumn fx:id="memColNiveau" text="Niveau"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
 
-                    <!-- Colonne tâches -->
-                    <VBox styleClass="panel-box" spacing="12" HBox.hgrow="ALWAYS">
-                        <padding><Insets top="16" bottom="16" left="16" right="16"/></padding>
-                        <Label text="📋  Tâches assignées" styleClass="panel-title"/>
-                        <Separator/>
-                        <TableView fx:id="tachesTable" styleClass="data-table" VBox.vgrow="ALWAYS" >
-                            <columns>
-                                <TableColumn fx:id="tacheColTitre"  text="Titre"       prefWidth="160"/>
-                                <TableColumn fx:id="tacheColProf"   text="Professeur"  prefWidth="130"/>
-                                <TableColumn fx:id="tacheColDesc"   text="Description" prefWidth="160"/>
-                                <TableColumn fx:id="tacheColStatut" text="Statut"      prefWidth="100"/>
-                                <TableColumn fx:id="tacheColNote"   text="Note"        prefWidth="70"/></columns>
-                        </TableView>
-                    </VBox>
+                        <VBox styleClass="panel-box" spacing="12" HBox.hgrow="ALWAYS">
+                            <padding>
+                                <Insets top="16" bottom="16" left="16" right="16"/>
+                            </padding>
+                            <Label text="📋 Tâches assignées" styleClass="panel-title"/>
+                            <Separator/>
+                            <TableView fx:id="tachesTable" styleClass="data-table" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="tacheColTitre" text="Titre"/>
+                                    <TableColumn fx:id="tacheColProf" text="Professeur"/>
+                                    <TableColumn fx:id="tacheColDesc" text="Description"/>
+                                    <TableColumn fx:id="tacheColStatut" text="Statut"/>
+                                    <TableColumn fx:id="tacheColNote" text="Note"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </VBox>
 
-                </HBox>
-            </VBox>
-            <!-- ══ ARCHIVE ══ -->
-            <VBox fx:id="archivePanel" spacing="16" visible="false">
-                <padding><Insets top="20"/></padding>
-                <HBox alignment="CENTER_LEFT" spacing="12">
-                    <Label text="Archives Universitaires" styleClass="panel-heading"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                </HBox>
-                <TableView fx:id="archiveTable" styleClass="data-table" VBox.vgrow="ALWAYS" >
-                    <columns>
-                        <TableColumn fx:id="archColAnnee"   text="Année Universitaire" prefWidth="280"/>
-                        <TableColumn fx:id="archColStatus"  text="Statut"              prefWidth="200"/>
-                        <TableColumn fx:id="archColActions" text="Actions"             prefWidth="400"/>
-                    </columns>
-                </TableView>
-            </VBox>
+                <!-- ══ ARCHIVE ══ -->
+                <VBox fx:id="archivePanel" spacing="16" visible="false">
+                    <padding>
+                        <Insets top="20"/>
+                    </padding>
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <Label text="Archives Universitaires" styleClass="panel-heading"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                    <TableView fx:id="archiveTable" styleClass="data-table" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="archColAnnee" text="Année Universitaire" prefWidth="280"/>
+                            <TableColumn fx:id="archColStatus" text="Statut"/>
+                            <TableColumn fx:id="archColActions" text="Actions" prefWidth="400"/>
+                        </columns>
+                    </TableView>
+                </VBox>
 
-        </StackPane>
-    </VBox>
-</center>
-
+            </StackPane>
+        </VBox>
+    </center>
 </BorderPane>

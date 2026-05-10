@@ -311,7 +311,10 @@
     -fx-font-weight: bold;
     -fx-text-fill: #e2e8f0;
 }
+.card-sub {
 
+    -fx-text-fill: #e2e8f0;
+}
 /* ── SEARCH & FILTERS ── */
 .search-field {
     -fx-background-color: #111827;

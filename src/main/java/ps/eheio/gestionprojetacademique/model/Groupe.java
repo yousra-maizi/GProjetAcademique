@@ -3,25 +3,28 @@ package ps.eheio.gestionprojetacademique.model;
 public class Groupe {
     private int    id;
     private String libelle;
-    private int projetId;
+    private int    projetId;
     private String projetLibelle;
+    private String classeLibelle;  // Ajouté pour afficher la filière
 
+    // Constructeur avec 5 paramètres (avec classeLibelle)
+    public Groupe(int id, String libelle, int projetId, String projetLibelle, String classeLibelle) {
+        this.id            = id;
+        this.libelle       = libelle;
+        this.projetId      = projetId;
+        this.projetLibelle = projetLibelle;
+        this.classeLibelle = classeLibelle;
+    }
 
+    // Constructeur avec 4 paramètres (sans classeLibelle)
     public Groupe(int id, String libelle, int projetId, String projetLibelle) {
         this.id            = id;
         this.libelle       = libelle;
         this.projetId      = projetId;
         this.projetLibelle = projetLibelle;
+        this.classeLibelle = null;
     }
-    /*
-    public Groupe(int id, String libelle, int projetId, private String projetLibelle;){
 
-        this.id=id;
-        this.libelle=libelle;
-        this.projetId=projetId;
-        this.projetLibelle=projetLibelle;
-    }
-*/
     public int getId() {
         return id;
     }
@@ -45,5 +48,20 @@ public class Groupe {
     public void setProjetId(int projetId) {
         this.projetId = projetId;
     }
-    public String getProjetLibelle()  { return projetLibelle; }
+
+    public String getProjetLibelle() {
+        return projetLibelle;
+    }
+
+    public void setProjetLibelle(String projetLibelle) {
+        this.projetLibelle = projetLibelle;
+    }
+
+    public String getClasseLibelle() {
+        return classeLibelle;
+    }
+
+    public void setClasseLibelle(String classeLibelle) {
+        this.classeLibelle = classeLibelle;
+    }
 }
