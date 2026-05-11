@@ -17,4 +17,7 @@ module ps.eheio.gestionprojetacademique {
     opens ps.eheio.gestionprojetacademique.controller to javafx.fxml;
     opens ps.eheio.gestionprojetacademique.scriptSQL;
     exports ps.eheio.gestionprojetacademique;
+    // Pour résoudre le problème d'accès réflexif
+    opens ps.eheio.gestionprojetacademique.controller.panels to javafx.fxml, javafx.base;
+
 }

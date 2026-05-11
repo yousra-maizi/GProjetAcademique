@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox fx:id="projetTypesPanel"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ps.eheio.gestionprojetacademique.controller.panels.ProjetTypesController"
+      spacing="24" visible="false">
+    <padding><Insets top="30"/></padding>
+
+    <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
+        <padding><Insets top="20" bottom="20" left="24" right="24"/></padding>
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label text="Projet de Synthèse" styleClass="panel-title"/>
+            <Label text="3ème année — toutes filières" styleClass="card-sub"/>
+        </VBox>
+        <Button text="👁  Consulter" styleClass="btn-primary" onAction="#showPS"/>
+    </HBox>
+
+    <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
+        <padding><Insets top="20" bottom="20" left="24" right="24"/></padding>
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label text="Projet de Fin d'Année" styleClass="panel-title"/>
+            <Label text="4ème année — toutes filières" styleClass="card-sub"/>
+        </VBox>
+        <Button text="👁  Consulter" styleClass="btn-primary" onAction="#showPFA"/>
+    </HBox>
+
+    <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
+        <padding><Insets top="20" bottom="20" left="24" right="24"/></padding>
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label text="Projet de Fin d'Étude" styleClass="panel-title"/>
+            <Label text="5ème année — toutes filières" styleClass="card-sub"/>
+        </VBox>
+        <Button text="👁  Consulter" styleClass="btn-primary" onAction="#showPFE"/>
+    </HBox>
+</VBox>

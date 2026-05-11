@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox fx:id="niveauxPanel"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ps.eheio.gestionprojetacademique.controller.panels.NiveauxController"
+      spacing="16" visible="false">
+    <padding><Insets top="20"/></padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="12">
+        <Button text="← Retour" styleClass="btn-secondary" onAction="#retour"/>
+        <Label fx:id="niveauxTitre" text="Filières" styleClass="panel-heading"/>
+        <Region HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <TableView fx:id="niveauxTable" styleClass="data-table" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="nivColLibelle" text="Filière"/>
+            <TableColumn fx:id="nivColActions" text="Actions"/>
+        </columns>
+    </TableView>
+</VBox>

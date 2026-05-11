@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox fx:id="membresPanel"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ps.eheio.gestionprojetacademique.controller.panels.MembresController"
+      spacing="16" visible="false">
+    <padding><Insets top="20"/></padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="12">
+        <Button text="← Retour" styleClass="btn-secondary" onAction="#retour"/>
+        <Label fx:id="membresTitre" text="Membres" styleClass="panel-heading"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="membresProjet" text="" styleClass="page-subtitle"/>
+    </HBox>
+
+    <HBox spacing="16" VBox.vgrow="ALWAYS">
+        <VBox styleClass="panel-box" spacing="12" HBox.hgrow="ALWAYS">
+            <padding><Insets top="16" bottom="16" left="16" right="16"/></padding>
+            <Label text="👥  Étudiants" styleClass="panel-title"/>
+            <Separator/>
+            <TableView fx:id="membresTable" styleClass="data-table" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="memColNom"    text="Nom"/>
+                    <TableColumn fx:id="memColPrenom" text="Prénom"/>
+                    <TableColumn fx:id="memColClasse" text="Filière"/>
+                    <TableColumn fx:id="memColNiveau" text="Niveau"/>
+                </columns>
+            </TableView>
+        </VBox>
+
+        <VBox styleClass="panel-box" spacing="12" HBox.hgrow="ALWAYS">
+            <padding><Insets top="16" bottom="16" left="16" right="16"/></padding>
+            <Label text="📋  Tâches assignées" styleClass="panel-title"/>
+            <Separator/>
+            <TableView fx:id="tachesTable" styleClass="data-table" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="tacheColTitre"  text="Titre"/>
+                    <TableColumn fx:id="tacheColProf"   text="Professeur"/>
+                    <TableColumn fx:id="tacheColDesc"   text="Description"/>
+                    <TableColumn fx:id="tacheColStatut" text="Statut"/>
+                    <TableColumn fx:id="tacheColNote"   text="Note"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </HBox>
+</VBox>

@@ -74,7 +74,7 @@ public class LoginController {
     private void loadDashboard() {
         try {
             Parent root = FXMLLoader.load(
-                    getClass().getResource("/ps/eheio/gestionprojetacademique/view/DashboardView1.fxml")
+                    getClass().getResource("/ps/eheio/gestionprojetacademique/view/DashboardView.fxml")
             );
             Stage stage = (Stage) loginField.getScene().getWindow();
             stage.setScene(new Scene(root, 1100, 700));

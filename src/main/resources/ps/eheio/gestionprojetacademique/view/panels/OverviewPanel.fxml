@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox fx:id="overviewPanel"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ps.eheio.gestionprojetacademique.controller.panels.OverviewController"
+      spacing="16" visible="true">
+    <padding><Insets top="20"/></padding>
+
+    <HBox styleClass="welcome-banner">
+        <padding><Insets top="24" bottom="24" left="24" right="24"/></padding>
+        <VBox spacing="8" HBox.hgrow="ALWAYS">
+            <Label text="ESPACE ADMINISTRATEUR" styleClass="welcome-eyebrow"/>
+            <Label fx:id="welcomeTitle" text="Bonjour !" styleClass="welcome-title"/>
+            <Label text="Gérez les groupes, consultez les archives et administrez les années."
+                   styleClass="welcome-sub" wrapText="true"/>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="16">
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
+                <padding><Insets top="16" bottom="16" left="16" right="16"/></padding>
+                <Label text="👥" styleClass="stat-icon-box, stat-icon-blue"/>
+                <VBox spacing="2">
+                    <Label fx:id="statGroupes" text="—" styleClass="stat-number"/>
+                    <Label text="GROUPES ACTIFS" styleClass="stat-desc"/>
+                </VBox>
+            </HBox>
+            <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
+                <padding><Insets top="16" bottom="16" left="16" right="16"/></padding>
+                <Label text="✅" styleClass="stat-icon-box, stat-icon-green"/>
+                <VBox spacing="2">
+                    <Label fx:id="statProjets" text="—" styleClass="stat-number"/>
+                    <Label text="PROJETS ACTIFS" styleClass="stat-desc"/>
+                </VBox>
+            </HBox>
+            <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
+                <padding><Insets top="16" bottom="16" left="16" right="16"/></padding>
+                <Label text="🎓" styleClass="stat-icon-box, stat-icon-yellow"/>
+                <VBox spacing="2">
+                    <Label fx:id="statEtudiants" text="—" styleClass="stat-number"/>
+                    <Label text="ÉTUDIANTS INSCRITS" styleClass="stat-desc"/>
+                </VBox>
+            </HBox>
+            <HBox styleClass="stat-card-h" spacing="16" alignment="CENTER_LEFT">
+                <padding><Insets top="16" bottom="16" left="16" right="16"/></padding>
+                <Label text="🗂" styleClass="stat-icon-box, stat-icon-red"/>
+                <VBox spacing="2">
+                    <Label fx:id="statArchives" text="—" styleClass="stat-number"/>
+                    <Label text="ANNÉES ARCHIVÉES" styleClass="stat-desc"/>
+                </VBox>
+            </HBox>
+        </VBox>
+        <VBox styleClass="quick-actions-box" spacing="12" prefWidth="220">
+            <padding><Insets top="20" bottom="20" left="16" right="16"/></padding>
+            <Label text="Actions rapides" styleClass="quick-title"/>
+            <Button text="🗂  Gérer les groupes" styleClass="btn-quick"
+                    onAction="#goToGroupes" maxWidth="Infinity"/>
+            <Button text="📋  Consulter l'archive" styleClass="btn-quick-outline"
+                    onAction="#goToArchive" maxWidth="Infinity"/>
+        </VBox>
+    </HBox>
+</VBox>
