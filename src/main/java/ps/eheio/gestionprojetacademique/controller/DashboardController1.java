@@ -1,4 +1,4 @@
-package ps.eheio.gestionprojetacademique.controller;
+/*package ps.eheio.gestionprojetacademique.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,7 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionFactory;
+import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionManager;
 import ps.eheio.gestionprojetacademique.Exceptions.DatabaseException;
 import ps.eheio.gestionprojetacademique.Repository.TacheRepository;
 import ps.eheio.gestionprojetacademique.model.*;
@@ -144,7 +144,7 @@ public class DashboardController1 {
             welcomeTitle.setText("Bonjour, " + admin.getPrenom() + " !");
         }
 
-        updateBadgeAnnee(ConnectionFactory.getActiveDbName(), true);
+        updateBadgeAnnee(ConnectionManager.getActiveDbName(), true);
         activeNavBtn = btnOverview;
         loadOverviewStats();
     }
@@ -276,7 +276,7 @@ public class DashboardController1 {
 
     private void handleConsulterGroupe(Groupe groupe) {
         try {
-            Connection conn = (consultationConnection != null) ? consultationConnection : ConnectionFactory.getActiveConnection();
+            Connection conn = (consultationConnection != null) ? consultationConnection : ConnectionManager.getActiveConnection();
 
             TacheRepository tacheRepo = new TacheRepository(conn);
 
@@ -405,7 +405,7 @@ public class DashboardController1 {
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    consultationConnection = ConnectionFactory.getConnection(annee.getDbName());
+                    consultationConnection = ConnectionManager.getConnection(annee.getDbName());
                     updateBadgeAnnee(annee.getDbName(), annee.isActive());
 
                     niveauService = new NiveauService(consultationConnection);
@@ -485,3 +485,5 @@ public class DashboardController1 {
         }
     }
 }
+
+ */

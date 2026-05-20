@@ -7,9 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionFactory;
+import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionManager;
 import ps.eheio.gestionprojetacademique.controller.panels.*;
-import ps.eheio.gestionprojetacademique.service.AuthService;
+import ps.eheio.gestionprojetacademique.service.AuthentificationService;
 
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -61,14 +61,15 @@ public class DashboardController {
         // topbar
         dateLabel.setText(LocalDate.now()
                 .format(DateTimeFormatter.ofPattern("EEEE, MMMM d yyyy")));
-        var admin = AuthService.getLoggedInAdmin();
+        var admin = AuthentificationService.getLoggedInAdmin();
         if (admin != null) {
             adminNameLabel.setText(admin.getPrenom() + " " + admin.getNom());
             adminRoleLabel.setText("ADMINISTRATEUR");
             overviewController.setAdminName(admin.getPrenom());
         }
+        // Affiche badge "active" ou "archivée"
+        updateBadgeAnnee(ConnectionManager.getActiveDbName(), true);
 
-        updateBadgeAnnee(ConnectionFactory.getActiveDbName(), true);
         activeNavBtn = btnOverview;
         overviewController.load();
         // afficher overview au démarrage
@@ -110,8 +111,9 @@ public class DashboardController {
     public Button getBtnArchive()     { return btnArchive; }
 
     // ── connexion consultation ──
+    // Quand on change de BD (consultation archive)
     public void onConsultationChanged(Connection conn) {
-        niveauxController.setConnection(conn);
+        niveauxController.setConnection(conn);// On Passe nouvelle connexion
         groupesController.setConnection(conn);
         membresController.setConnection(conn);
     }
@@ -146,7 +148,7 @@ public class DashboardController {
     }
 
     @FXML private void handleLogout() {
-        AuthService.logout();
+        AuthentificationService.logout();
         try {
             Parent root = FXMLLoader.load(getClass().getResource(
                     "/ps/eheio/gestionprojetacademique/view/LoginView1.fxml"));

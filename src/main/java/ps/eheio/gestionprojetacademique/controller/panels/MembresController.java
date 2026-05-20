@@ -5,8 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionFactory;
-import ps.eheio.gestionprojetacademique.Exceptions.ConnectionException;
+import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionManager;
 import ps.eheio.gestionprojetacademique.Exceptions.DatabaseException;
 import ps.eheio.gestionprojetacademique.Repository.TacheRepository;
 import ps.eheio.gestionprojetacademique.controller.DashboardController;
@@ -67,6 +66,11 @@ public class MembresController {
     public void setConnection(Connection conn) {
         this.consultationConnection = conn;
     }
+    private GroupeService getGroupeService() throws DatabaseException {
+        return consultationConnection!= null
+                ? new GroupeService(consultationConnection)
+                : new GroupeService();
+    }
 
     public void load(Groupe groupe, Niveau niveau) {
         membresTitre.setText(groupe.getLibelle());
@@ -75,9 +79,9 @@ public class MembresController {
         try {
             Connection conn = consultationConnection != null
                     ? consultationConnection
-                    : ConnectionFactory.getActiveConnection();
+                    : ConnectionManager.getActiveConnection();
 
-            GroupeService service = new GroupeService(conn);
+            GroupeService service = getGroupeService();
             TacheRepository tacheRepo = new TacheRepository(conn);
 
             // membres
@@ -147,7 +151,7 @@ public class MembresController {
 
         } catch (DatabaseException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
-            e.printStackTrace();
+            System.out.println("error here");
         }
     }
 

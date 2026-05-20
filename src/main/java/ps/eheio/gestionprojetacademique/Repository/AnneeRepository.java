@@ -1,25 +1,24 @@
 package ps.eheio.gestionprojetacademique.Repository;
 
-import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionFactory;
+import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionManager;
 import ps.eheio.gestionprojetacademique.Exceptions.ArchiveException;
 import ps.eheio.gestionprojetacademique.Exceptions.ConnectionException;
 import ps.eheio.gestionprojetacademique.Exceptions.DatabaseException;
 import ps.eheio.gestionprojetacademique.model.Eheiannee;
 
 import java.io.File;
-import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AnneeRepository {
 
-    // scanne toutes les BDs qui commencent par "ehei"
+    // scanne toutes les BD
     public List<Eheiannee> findAll() {
         List<Eheiannee> annees = new ArrayList<>();
 
         try {
-            Connection conn = ConnectionFactory.getServerConnection();
+            Connection conn = ConnectionManager.getServerConnection();
 
             PreparedStatement stmt = conn.prepareStatement(
                     "SELECT schema_name FROM information_schema.schemata " +
@@ -57,7 +56,7 @@ public class AnneeRepository {
     // lit la table meta d'une BD
     private Eheiannee readMeta(String dbName) {
         try {
-            Connection conn = ConnectionFactory.getConnection(dbName);
+            Connection conn = ConnectionManager.getConnection(dbName);
             PreparedStatement stmt = conn.prepareStatement(
                     "SELECT id, libelle, statut FROM meta LIMIT 1"
             );
@@ -95,7 +94,7 @@ public class AnneeRepository {
     public void archiverEtCreerNouvelle(Eheiannee anneeActive) throws ArchiveException, ConnectionException {
         try {
             // 1 — archiver l'année courante
-            Connection        conn = ConnectionFactory.getActiveConnection();
+            Connection        conn = ConnectionManager.getActiveConnection();
             PreparedStatement stmt = conn.prepareStatement(
                     "UPDATE meta SET statut = 'archivé' WHERE id = ?"
             );
@@ -118,7 +117,7 @@ public class AnneeRepository {
             creerNouvelleBD(newDbName, newLibelle);
 
             // 4 — basculer la connexion
-            ConnectionFactory.switchActiveConnection(newDbName);
+            ConnectionManager.switchActiveConnection(newDbName);
 
         } catch (ArchiveException | ConnectionException e) {
             throw e;
@@ -132,7 +131,7 @@ public class AnneeRepository {
     private void creerNouvelleBD(String dbName, String libelle) throws DatabaseException {
         try {
             // étape 1 — créer la BD
-            Connection serverConn = ConnectionFactory.getServerConnection();
+            Connection serverConn = ConnectionManager.getServerConnection();
             Statement  stmt       = serverConn.createStatement();
             stmt.executeUpdate("CREATE DATABASE " + dbName);
             System.out.println("✅ BD créée: " + dbName);
@@ -140,7 +139,7 @@ public class AnneeRepository {
 
 
             // étape 2 — se connecter sur la nouvelle BD
-            Connection newConn = ConnectionFactory.getConnection(dbName);
+            Connection newConn = ConnectionManager.getConnection(dbName);
             System.out.println("✅ Connecté sur nouvelle BD: " + dbName);
 
             // étape 3 — exécuter le script

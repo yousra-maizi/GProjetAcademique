@@ -1,12 +1,11 @@
 package ps.eheio.gestionprojetacademique.Repository;
 
-import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionFactory;
+import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionManager;
 import ps.eheio.gestionprojetacademique.model.Admin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class AdminRepository {
 
@@ -19,7 +18,7 @@ public class AdminRepository {
 
         try {
 
-            Connection conn = ConnectionFactory.getActiveConnection();
+            Connection conn = ConnectionManager.getActiveConnection();
             PreparedStatement stmt = conn.prepareStatement(req);
             stmt.setString(1, login);
             ResultSet rs = stmt.executeQuery();

@@ -28,7 +28,7 @@ public class AnneeService {
         Eheiannee active = getAnneeActive();
         if (active == null) {
             throw new ArchiveException(
-                    "Aucune année active trouvée — archivage impossible"
+                    "Aucune année active trouvée ,archivage impossible"
             );
         }
         repo.archiverEtCreerNouvelle(active);

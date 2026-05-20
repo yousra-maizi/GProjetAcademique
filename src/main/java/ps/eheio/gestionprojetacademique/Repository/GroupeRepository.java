@@ -1,6 +1,6 @@
 package ps.eheio.gestionprojetacademique.Repository;
 
-import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionFactory;
+import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionManager;
 import ps.eheio.gestionprojetacademique.Exceptions.DatabaseException;
 import ps.eheio.gestionprojetacademique.model.Etudiant;
 import ps.eheio.gestionprojetacademique.model.Groupe;
@@ -21,7 +21,7 @@ public class GroupeRepository {
 
     public GroupeRepository() throws DatabaseException {
         try {
-            this.connection = ConnectionFactory.getActiveConnection();
+            this.connection = ConnectionManager.getActiveConnection();
         } catch (Exception e) {
             throw new DatabaseException("Impossible d'obtenir la connexion active", e);
         }
@@ -126,7 +126,7 @@ public class GroupeRepository {
     /**
      * Récupère les étudiants d'un groupe avec leurs informations
      */
-    public List<Etudiant> findEtudiantsByGroupe(int groupeId) throws DatabaseException {
+   /* public List<Etudiant> findEtudiantsByGroupe(int groupeId) throws DatabaseException {
         List<Etudiant> etudiants = new ArrayList<>();
         String req = "SELECT u.id, u.login, u.password, u.role_id, " +
                 "e.nom, e.prenom, e.groupe_id, e.classe_id, " +
@@ -160,5 +160,5 @@ public class GroupeRepository {
             throw new DatabaseException("Erreur chargement étudiants du groupe: " + groupeId, e);
         }
         return etudiants;
-    }
+    }*/
 }

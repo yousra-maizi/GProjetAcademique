@@ -26,14 +26,9 @@ public class GroupesController {
     private DashboardController dashboard;
     private GroupeService        groupeService;
     private Niveau               niveauCourant;
-
+    private Connection currentConnection = null;
     @FXML
     public void initialize() {
-        try {
-            groupeService = new GroupeService();
-        } catch (DatabaseException e) {
-            e.printStackTrace();
-        }
         grpColNom.prefWidthProperty().bind(
                 groupesTable.widthProperty().multiply(0.40));
         grpColProjet.prefWidthProperty().bind(
@@ -47,7 +42,12 @@ public class GroupesController {
     }
 
     public void setConnection(Connection conn) {
-        this.groupeService = new GroupeService(conn);
+        this.currentConnection = conn;
+    }
+    private GroupeService getService() throws DatabaseException {
+        return currentConnection != null
+                ? new GroupeService(currentConnection)
+                : new GroupeService();
     }
 
     public Niveau getNiveauCourant() { return niveauCourant; }
@@ -57,7 +57,8 @@ public class GroupesController {
         groupesTitre.setText(niveau.getLibelle());
 
         try {
-            List<Groupe> groupes = groupeService.getGroupesByNiveau(niveau.getId());
+            GroupeService service = getService();
+            List<Groupe> groupes = service.getGroupesByNiveau(niveau.getId());
             ObservableList<Groupe> data = FXCollections.observableArrayList(groupes);
 
             grpColNom.setCellValueFactory(new PropertyValueFactory<>("libelle"));
@@ -84,7 +85,7 @@ public class GroupesController {
 
             groupesTable.setItems(data);
 
-            // recherche en temps réel
+            // recherche en temps réel pour trouver un groupe:
             groupSearch.textProperty().addListener((obs, old, newVal) -> {
                 if (newVal.trim().isEmpty()) {
                     groupesTable.setItems(data);

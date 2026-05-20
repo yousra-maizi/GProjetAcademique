@@ -1,6 +1,6 @@
 package ps.eheio.gestionprojetacademique.Repository;
 
-import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionFactory;
+import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionManager;
 import ps.eheio.gestionprojetacademique.Exceptions.ConnectionException;
 import ps.eheio.gestionprojetacademique.Exceptions.DatabaseException;
 import ps.eheio.gestionprojetacademique.model.Niveau;
@@ -18,7 +18,7 @@ public class NiveauRepository {
 
     public NiveauRepository() throws DatabaseException {
         try {
-            this.connection = ConnectionFactory.getActiveConnection();
+            this.connection = ConnectionManager.getActiveConnection();
         } catch (ConnectionException e) {
             throw new DatabaseException("Connexion impossible", e);
         }
@@ -27,7 +27,7 @@ public class NiveauRepository {
     /**
      * Récupère tous les niveaux
      */
-    public List<Niveau> findAll() throws DatabaseException {
+   /* public List<Niveau> findAll() throws DatabaseException {
         List<Niveau> niveaux = new ArrayList<>();
         String req = "SELECT id, libelle FROM niveau ORDER BY id";
         try {
@@ -41,10 +41,10 @@ public class NiveauRepository {
         }
         return niveaux;
     }
-
+*/
     /**
      * Récupère les niveaux par année (3, 4, 5)
-     * Exemple: annee=3 → 3GI, 3RSI, 3MEC, 3GC
+     * Exemple: annee=3 → 3GI, 3IG
      */
     public List<Niveau> findByAnnee(int annee) throws DatabaseException {
         List<Niveau> niveaux = new ArrayList<>();
@@ -62,4 +62,3 @@ public class NiveauRepository {
         return niveaux;
     }
 }
-//deep4

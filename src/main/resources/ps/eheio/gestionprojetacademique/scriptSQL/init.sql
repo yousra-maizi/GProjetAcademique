@@ -83,9 +83,10 @@ CREATE TABLE tache (
 );
 
 CREATE TABLE cible_tache_groupe (
+  id int PRIMARY KEY AUTO_INCREMENT,
   tache_id int NOT NULL,
   groupe_id int NOT NULL,
-  CONSTRAINT PRIMARY KEY(tache_id, groupe_id),
+  CONSTRAINT uq_tache_groupe UNIQUE (tache_id, groupe_id),
   CONSTRAINT fk_tache_given_to_groupe FOREIGN KEY (tache_id)
     REFERENCES tache(id),
   CONSTRAINT fk_groupe_given_tache FOREIGN KEY (groupe_id)
@@ -94,15 +95,14 @@ CREATE TABLE cible_tache_groupe (
 
 CREATE TABLE submission (
   id int PRIMARY KEY AUTO_INCREMENT,
-  description longtext NOT NULL,
-  etatValidation varchar(50) NOT NULL,
+  description longtext,
+  date_soumission date,
+  date_validation date,
   note decimal(4,3) DEFAULT NULL,
-  groupe_id int,
-  tache_id int,
-  CONSTRAINT fk_tache_that_was_submited FOREIGN KEY (tache_id)
-    REFERENCES tache(id),
-  CONSTRAINT fk_groupe_that_submited FOREIGN KEY (groupe_id)
-    REFERENCES groupe(id)
+  cible_id int,
+  CONSTRAINT fk_cible FOREIGN KEY (cible_id)
+    REFERENCES cible_tache_groupe(id) ON DELETE CASCADE,
+  CONSTRAINT chk_date CHECK (date_soumission <= date_validation)
 );
 
 CREATE TABLE attachement (

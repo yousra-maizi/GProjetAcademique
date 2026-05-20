@@ -4,19 +4,19 @@ import ps.eheio.gestionprojetacademique.Exceptions.*;
 import ps.eheio.gestionprojetacademique.Repository.AdminRepository;
 import ps.eheio.gestionprojetacademique.model.Admin;
 
-public class AuthService {
+public class AuthentificationService {
     // Single instance for the whole app
-    private static AuthService instance;
+    private static AuthentificationService instance;
     private final AdminRepository repAdmin = new AdminRepository();
     private static Admin loggedInAdmin = null;
 
-    // Private constructor — no one can do new AuthService()
-    private AuthService() {}
+    // Private constructor no one can do new AuthService()
+    private AuthentificationService() {}
 
     // Global access point
-    public static AuthService getInstance() {
+    public static AuthentificationService getInstance() {
         if (instance == null) {
-            instance = new AuthService();
+            instance = new AuthentificationService();
         }
         return instance;
     }
@@ -55,7 +55,7 @@ public class AuthService {
         public static Admin getLoggedInAdmin() {
             return loggedInAdmin;
         }
-        // verif si qlq est connecté !
+        // verif si qlq est connecté
         public static boolean isLoggedIn() {
             return loggedInAdmin != null;
         }

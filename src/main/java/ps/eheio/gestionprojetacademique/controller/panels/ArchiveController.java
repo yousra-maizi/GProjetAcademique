@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionFactory;
+import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionManager;
 import ps.eheio.gestionprojetacademique.Exceptions.DatabaseException;
 import ps.eheio.gestionprojetacademique.controller.DashboardController;
 import ps.eheio.gestionprojetacademique.model.Eheiannee;
@@ -21,6 +21,7 @@ public class ArchiveController {
     @FXML private TableColumn<Eheiannee, Void>   archColActions;
 
     private DashboardController dashboard;
+
     private final AnneeService  anneeService = new AnneeService();
 
     @FXML
@@ -102,7 +103,7 @@ public class ArchiveController {
         confirm.showAndWait().ifPresent(r -> {
             if (r == ButtonType.OK) {
                 try {
-                    Connection conn = ConnectionFactory.getConnection(
+                    Connection conn = ConnectionManager.getConnection(
                             annee.getDbName());
                     dashboard.updateBadgeAnnee(
                             annee.getDbName(), annee.isActive());

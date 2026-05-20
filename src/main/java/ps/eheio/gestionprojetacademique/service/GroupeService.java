@@ -29,7 +29,7 @@ public class GroupeService {
     /**
      * Récupère tous les groupes
      */
-    public List<Groupe> getAllGroupes() throws DatabaseException {
+   public List<Groupe> getAllGroupes() throws DatabaseException {
         return groupeRepo.findAll();
     }
 
@@ -43,9 +43,9 @@ public class GroupeService {
     /**
      * Récupère les étudiants d'un groupe
      */
-    public List<Etudiant> getEtudiantsByGroupe(int groupeId) throws DatabaseException {
+   /* public List<Etudiant> getEtudiantsByGroupe(int groupeId) throws DatabaseException {
         return groupeRepo.findEtudiantsByGroupe(groupeId);
-    }
+    }*/
     public List<Etudiant> getEtudiantsByGroupeAndNiveau(int groupeId, int niveauId) throws DatabaseException {
         return groupeRepo.findEtudiantsByGroupeAndNiveau(groupeId, niveauId);
     }

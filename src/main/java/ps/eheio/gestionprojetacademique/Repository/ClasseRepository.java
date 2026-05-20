@@ -1,6 +1,6 @@
 package ps.eheio.gestionprojetacademique.Repository;
 
-import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionFactory;
+import ps.eheio.gestionprojetacademique.ConnectionDB.ConnectionManager;
 import ps.eheio.gestionprojetacademique.Exceptions.ConnectionException;
 import ps.eheio.gestionprojetacademique.Exceptions.DatabaseException;
 import ps.eheio.gestionprojetacademique.model.Classe;
@@ -8,7 +8,7 @@ import ps.eheio.gestionprojetacademique.model.Classe;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+//////////////////////NOT USED IN ANYTHING !!!!!!
 public class ClasseRepository {
 
     private final Connection connection;
@@ -19,7 +19,7 @@ public class ClasseRepository {
 
     public ClasseRepository() throws DatabaseException {
         try {
-            this.connection = ConnectionFactory.getActiveConnection();
+            this.connection = ConnectionManager.getActiveConnection();
         } catch (ConnectionException e) {
             throw new DatabaseException("Connexion impossible", e);
         }

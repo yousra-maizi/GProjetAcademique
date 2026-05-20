@@ -19,9 +19,9 @@ public class NiveauService {
         this.niveauRepo = new NiveauRepository();
     }
 
-    public List<Niveau> getAllNiveaux() throws DatabaseException {
+   /* public List<Niveau> getAllNiveaux() throws DatabaseException {
         return niveauRepo.findAll();
-    }
+    }*/
 
     public List<Niveau> getNiveauxByAnnee(int annee) throws DatabaseException {
         return niveauRepo.findByAnnee(annee);

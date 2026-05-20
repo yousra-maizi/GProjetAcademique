@@ -13,15 +13,13 @@ import javafx.stage.Stage;
 import ps.eheio.gestionprojetacademique.Exceptions.AuthenticationException;
 import ps.eheio.gestionprojetacademique.Exceptions.LoginException;
 import ps.eheio.gestionprojetacademique.Exceptions.MdpException;
-import ps.eheio.gestionprojetacademique.service.AuthService;
+import ps.eheio.gestionprojetacademique.service.AuthentificationService;
 
 public class LoginController {
     @FXML private TextField loginField;
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
     @FXML private Button loginButton;
-    //private final AuthService authService = new AuthService();
-    //private AuthService authService;
     @FXML
     public void initialize() {
         passwordField.setOnAction(event -> handleLogin());
@@ -47,7 +45,7 @@ public class LoginController {
             loginButton.setDisable(true);
             loginButton.setText("Logging in...");
 
-            AuthService.getInstance().authentification(login, password);
+            AuthentificationService.getInstance().authentification(login, password);
 
             loadDashboard();
 
